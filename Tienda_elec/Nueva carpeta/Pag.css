@@ -328,6 +328,9 @@ footer p {
 }
 @media (max-width: 600px){
 .Proyectos h2{
-  font-size: 30px;
+  font-size: 31px;
+}
+.proyecto h3{
+  font-size: 28px ;
 }
 }
