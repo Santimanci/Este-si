@@ -326,3 +326,8 @@ footer p {
     width: 50%;
   }
 }
+@media (max-width: 600px){
+.Proyectos h2{
+  font-size: 30px;
+}
+}
