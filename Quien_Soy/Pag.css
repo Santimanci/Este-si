@@ -1,0 +1,336 @@
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+header{
+    width: 96%;
+    background-color: #333;
+    color: white;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 2em;
+    position: fixed;
+    top: auto;  
+}
+header .logo{
+    font-size: 1.2em;
+}
+nav ul{
+    list-style: none;
+    display: flex;
+    gap: 1em;
+}
+nav a {
+    color: white;
+    display: flex;
+    gap: 1em;
+}
+.presentacion{
+display: flex;
+}
+
+.Presentacion {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 2em; 
+    height: 78vh; 
+}
+
+
+.Presentacion .ilustracion img {
+    max-width: 80%; 
+    height: auto;
+    display: auto;
+}
+
+.Presentacion .contenido {
+    max-width: 50%; 
+    text-align: left; 
+}
+
+.Presentacion .contenido h1 {
+    font-size: 3em; 
+}
+
+.Presentacion .contenido p {
+    font-size: 20 px; 
+    line-height: 1.6; 
+}
+
+.contenido {
+    width: 110%;
+    font-size: 20px;
+}
+.ilustracion{
+    width: 140%;
+    justify-content: center;
+    text-align: center;
+ 
+}
+.contenido h1{
+    color:rgb(243, 71, 3);
+    font-size: 100px;
+    display: flex;
+    justify-content: center;
+    
+
+
+
+}
+.contenido button{
+    background-color: rgb(254, 80, 0);
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.destacado{
+    background: #f25c2a;
+    text-align: center;
+    padding: 100px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+  
+}
+.destacado img{
+    width: 300px;
+    height: 300px;
+    border-radius: 100vh;
+}
+.destacado cite{
+    font-size: 25px;
+}
+.destacado p{
+    font-size: 30px;    
+    padding: 10px;
+    margin: 20px;
+}
+.proyectos {
+    padding: 4em 1em;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .proyectos h2 {
+    font-size: 1em;
+    margin-bottom: 1.5em;
+  }
+.grid-proyectos {
+    width: 97%;
+    margin: 20px;
+    gap: 2em;
+    display: grid;
+    grid-template-columns: repeat(4,1fr)
+    
+}
+.proyecto {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  font-size: 25px;
+ 
+}
+
+.proyecto img {
+  max-height: 300px; 
+  object-fit: cover; 
+}
+
+.proyecto p {
+  flex-grow:1;
+}
+
+.proyecto {
+    background: rgb(242, 242, 242);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+.proyecto img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 1em;
+}
+
+.proyecto h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.proyecto p {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 0px;
+}
+
+.btn-proyecto {
+    background-color: #fe5000;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.8em;
+    width: 35%;
+    padding-top: 10px;
+    height: 4vh;
+    margin: 0 auto;
+    transition: background-color 1s ease;
+    
+}
+
+.btn-proyecto:hover {
+    background-color: #e04800;
+}
+
+.proyecto h2{
+    display: flex;
+    
+}
+
+.Proyectos h2 {
+    text-align: center;
+    font-size: 70px;
+}
+
+footer {
+  margin-top: 70px ;
+  background-color: #515050;
+  padding: 10px ;
+  color: white; 
+  display: flex;
+ justify-content: end;
+width: 100%;
+box-sizing: border-box;
+}
+
+footer p {
+    margin: 10px;
+    font-size: 20px;
+    padding: 5px;
+}
+@media (max-width: 1023px) {
+  header {
+    padding:1.4 em;
+    text-align: center;
+    justify-content:space-evenly;
+    height: 3%;
+  }
+  nav ul {
+    display: table-row;
+    flex-direction:column;
+    gap: 0.1em;
+    padding-top: 0%;
+    font-size: 13px;
+  }
+  
+  .Presentacion {
+    flex-direction: column;
+    height: auto;
+    padding: 6em 1em 2em;
+  }
+  
+  .Presentacion .ilustracion,
+  .Presentacion .contenido {
+    width: 100%;
+    gap: 10px;
+    max-width: 100%;
+    text-align:center;
+    height: 0%;
+  }
+  
+  .Presentacion .contenido h1 {
+    font-size: 2.5em;
+  }
+  
+  .grid-proyectos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .destacado {
+    padding: 3em 1em;
+    height: auto;
+    width: 100%;
+  }
+  
+  .destacado img {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .destacado p {
+    font-size: 1.2em;
+  }
+  
+  .destacado cite {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 767px) {
+  .Presentacion .contenido h1 {
+    font-size: 2em;
+  }
+  
+  .grid-proyectos {
+    grid-template-columns: 1fr;
+  }
+  
+  .destacado img {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .destacado p {
+    font-size: 1.6em;
+    padding: 0;
+  }
+  
+  .proyecto {
+    margin-bottom: 1.5em;
+  }
+  
+  .proyecto img {
+    max-height: 250px;
+  }
+  
+  footer {
+    padding: 1em;
+    text-align: center;
+    
+  }
+  
+  footer p {
+    font-size: 0.9em;
+
+  }
+  .btn-proyecto{
+    width: 50%;
+  }
+}
+@media (max-width: 600px){
+.Proyectos h2{
+  font-size: 31px;
+}
+.proyecto h3{
+  font-size: 28px ;
+}
+}
