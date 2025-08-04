@@ -4,21 +4,28 @@
     gap: 10px;
     color: black;
     background-color: rgb(255, 255, 255);
+    transform: translateY(-5px);
 }
 .tarjetas div{
+    width: 80%;
+    height: 80%;
     background-color: rgb(167, 93, 66);
     border-radius: 10px;
     padding: 35px;
     box-shadow: 0 2px 7px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease;
 }
 .tarjetas img{
    width: 95%;
     height: 190px;
-    border-radius: 5px 8px; 
+    border-radius: 5px 8px;     
 }
 .tarjetas h2{
     font-size: 30px;
 }
 p{
     font-size: 15px;
+}
+.tarjeta:hover {
+  transform: translateY(-5px);
 }
