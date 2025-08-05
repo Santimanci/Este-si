@@ -1,5 +1,5 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: "",sains;
     background-color: #121212;
     margin: 0;
     padding: 0;
@@ -43,7 +43,7 @@ header {
 }
 
 .tarjeta p {
-    font-size: 15px;
+    font-size: 16px;
     margin-bottom: 10px;
     color: #000000;
     line-height: 1.5;
@@ -82,3 +82,16 @@ header {
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
+@media (max-width: 768px) {
+    header {
+        font-size: 2.2rem;
+    }
+
+    .tarjetas {
+        grid-template-columns: 1fr;
+    }
+
+    .tarjeta {
+        height: auto; 
+    }
+}
