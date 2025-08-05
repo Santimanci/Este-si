@@ -67,7 +67,7 @@ function mostrarDetallesLugar(lugar) {
         </ul>
         <button id="cerrarModal" style="
             margin-top: 20px;
-            background-color: #1a73e8;
+            background-color: #a36e4f;
             color: white;
             padding: 10px 20px;
             border: none;

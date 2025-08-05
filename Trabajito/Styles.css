@@ -61,7 +61,7 @@ header {
 }
 .vermas a {
     padding: 8px 20px;
-    background-color: #1a73e8;
+    background-color: #a36e4f;
     color: white;
     font-size: 0.9rem;
     font-weight: 500;
@@ -72,7 +72,7 @@ header {
 
 .vermas a:hover {
     text-align: center;
-    background-color: #0d62c9;
+    background-color: #f0a478;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(26, 115, 232, 0.3);
 }
