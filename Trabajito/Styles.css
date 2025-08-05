@@ -1,31 +1,95 @@
-.tarjetas{
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    font-size: 2.8rem;
+    text-align: center;
+    margin: 40px 0 30px;
+    color: #ffffff;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.tarjetas {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    color: black;
-    background-color: rgb(255, 255, 255);
-    transform: translateY(-5px);
+    gap: 25px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
-.tarjetas div{
-    width: 80%;
-    height: 80%;
-    background-color: rgb(167, 93, 66);
-    border-radius: 10px;
-    padding: 35px;
-    box-shadow: 0 2px 7px rgba(0,0,0,0.1);
-      transition: transform 0.4s ease;
+
+.tarjeta {
+    background: #fbebd6c8;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 500px; 
+    box-sizing: border-box;
 }
-.tarjetas img{
-   width: 95%;
-    height: 190px;
-    border-radius: 5px 8px;     
+
+.tarjeta h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #000000;
+    font-weight: 500;
 }
-.tarjetas h2{
-    font-size: 30px;
-}
-p{
+
+.tarjeta p {
     font-size: 15px;
+    margin-bottom: 10px;
+    color: #000000;
+    line-height: 1.5;
+    flex-shrink: 0;
 }
+
+.tarjeta img {
+    margin: auto;
+    width: 191px;
+    height: 200px;
+    border-radius: 5px;
+}
+.vermas a {
+    padding: 8px 20px;
+    margin-left: 120px;
+    background-color: #1a73e8;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.vermas a:hover {
+    text-align: center;
+    background-color: #0d62c9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(26, 115, 232, 0.3);
+}
+
 .tarjeta:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+    header {
+        font-size: 2.2rem;
+    }
+
+    .tarjetas {
+        grid-template-columns: 1fr;
+    }
+
+    .tarjeta {
+        height: auto; 
+    }
 }
