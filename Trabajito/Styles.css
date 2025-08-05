@@ -82,16 +82,3 @@ header {
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-@media (max-width: 768px) {
-    header {
-        font-size: 2.2rem;
-    }
-
-    .tarjetas {
-        grid-template-columns: 1fr;
-    }
-
-    .tarjeta {
-        height: auto; 
-    }
-}
