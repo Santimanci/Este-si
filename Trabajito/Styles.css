@@ -56,9 +56,11 @@ header {
     height: 200px;
     border-radius: 5px;
 }
+.vermas{
+    margin: auto;
+}
 .vermas a {
     padding: 8px 20px;
-    margin-left: 120px;
     background-color: #1a73e8;
     color: white;
     font-size: 0.9rem;
