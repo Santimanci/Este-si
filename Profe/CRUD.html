@@ -55,28 +55,70 @@
     </div>
     <script>
         let datos = []
-        function guardar(){
-            if(document.getElementById("nombre").value==""){
-                alert("Por favor digite el nombre")
-            }else if (document.getElementById("apellidos").value==""){
-                alert("Por favor digite el apellidos")
-            }else if (document.getElementById("documento").value==""){
-                alert("Por favor digite el documento")
-            }else if (document.getElementById("correo").value==""){
-                alert("Por favor digite el correo")
-            }else{
-                let reg = {
-                    nombre:document.getElementById("nombre").value,
-                    apellidos: document.getElementById("apellidos").value,
-                    documento:document.getElementById("documento").value,
-                    correo:document.getElementById("correo").value
-                }
-                datos.push(reg)
-                console.log(datos);
-                document.getElementById("bodyData").innerHTML=""
-                pintarDatos()
-            }
-        }
+       function guardar() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const apellidos = document.getElementById("apellidos").value.trim();
+    const documento = document.getElementById("documento").value.trim();
+    const correo = document.getElementById("correo").value.trim();
+
+    if (!nombre) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: 'Por favor, digita el nombre',
+            confirmButtonColor: '#0d6efd'
+        });
+    } else if (!apellidos) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: 'Por favor, digita los apellidos',
+            confirmButtonColor: '#0d6efd'
+        });
+    } else if (!documento) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: 'Por favor, digita el documento',
+            confirmButtonColor: '#0d6efd'
+        });
+    } else if (!correo) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campo requerido',
+            text: 'Por favor, digita el correo',
+            confirmButtonColor: '#0d6efd'
+        });
+    } else {
+        let reg = {
+            nombre,
+            apellidos,
+            documento,
+            correo
+        };
+        datos.push(reg);
+        document.getElementById("bodyData").innerHTML = "";
+        pintarDatos();
+
+        document.getElementById("nombre").value = "";
+        document.getElementById("apellidos").value = "";
+        document.getElementById("documento").value = "";
+        document.getElementById("correo").value = "";
+
+     
+        const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
+        modal.hide();
+
+       
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro guardado',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+}
+
 
         function pintarDatos(){
             datos.forEach((item, i)=>{
