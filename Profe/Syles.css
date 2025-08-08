@@ -6,12 +6,15 @@ body {
     padding: 20px;
 }
 
-
+.tablas{
+    margin: auto;
+}
 .tabla {
-    background-color: #fff;
+    margin-left: 35%;
+    background-color: #401818;
     border-radius: 18px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    width: 100%;
+    width: 30%;
 }
 
 
@@ -67,4 +70,24 @@ button.btn-primary {
     font-size: 14px;
     padding: 8px 16px;
     white-space: nowrap;
+}
+@media (max-width: 880px) and (min-width: 587px){
+  .tablas{
+    margin-right: 50%;
+  }
+}
+@media (max-width: 598px){
+    .tablas{
+        margin-right: 70%;
+    }
+}
+@media (max-width: 546px) and (min-width: 300px){
+    .tablas{
+        margin-right: 100%
+    }
+}
+@media (max-width: 375px) and (min-width: 300px){
+    .tablas{
+        margin-right: 2000px;
+    }
 }
