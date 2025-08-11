@@ -5,12 +5,8 @@ body {
     margin: 0;
     padding: 20px;
 }
-
-.tablas{
-    margin: auto;
-}
 .tabla {
-    margin-left: 35%;
+    margin-left: 30%;
     background-color: #401818;
     border-radius: 18px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
@@ -72,22 +68,22 @@ button.btn-primary {
     white-space: nowrap;
 }
 @media (max-width: 880px) and (min-width: 587px){
-  .tablas{
-    margin-right: 50%;
+  .tabla{
+    margin-left: 20%;
   }
 }
 @media (max-width: 598px){
-    .tablas{
-        margin-right: 70%;
+    .tabla{
+        margin-left: 10%;
     }
 }
 @media (max-width: 546px) and (min-width: 300px){
-    .tablas{
-        margin-right: 100%
+    .tabla{
+        margin-left: 10%
     }
 }
 @media (max-width: 375px) and (min-width: 300px){
-    .tablas{
-        margin-right: 2000px;
+    .tabla {
+        margin-left: 0 ;
     }
 }
