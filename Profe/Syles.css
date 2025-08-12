@@ -1,14 +1,15 @@
+
+@media (max-width: 598px) {
     .tabla {
         margin-left: 10%;
     }
+}
 
-     
 @media (max-width: 546px) and (min-width: 300px) {
     .tabla {
         margin-left: 10%;
     }
 }
-                                
 @media (max-width: 375px) and (min-width: 300px) {
     .tabla {
         margin-left: 0;
@@ -21,9 +22,9 @@
         padding: 8px; 
     }
     #save {
-        font-size: 14px;
+        font-size: 14px; 
     }
     button.btn-primary {
-        font-size: 12px; /
+        font-size: 12px; 
     }
 }
