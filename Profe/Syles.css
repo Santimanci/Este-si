@@ -3,34 +3,38 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
-.tabla {
+.contenedor-tabla {
     margin: 0 auto;
     background-color: #401818;
     border-radius: 18px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    width: 90%; 
-    max-width: 800px; 
+    width: 100%;
+    max-width: 1000px;
+    overflow: hidden;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 th, td {
     text-align: center;
     vertical-align: middle;
-    font-size: 16px;
-    padding: 12px;
+    padding: 12px 8px;
     border: 1px solid #dee2e6;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 th {
     background-color: #0d6efd;
     color: #fff;
+    font-size: 16px;
 }
 
 .modal-body input {
@@ -40,10 +44,9 @@ th {
     border-radius: 8px;
     border: 1px solid #ced4da;
     font-size: 15px;
-    box-sizing: border-box; 
 }
 
-#save {
+#btnGuardar {
     width: 100%;
     padding: 10px;
     border: none;
@@ -56,59 +59,76 @@ th {
     transition: background-color 0.3s;
 }
 
-#save:hover {
+#btnGuardar:hover {
     background-color: #157347;
 }
 
-button.btn-primary {
-    font-size: 14px;
-    padding: 8px 16px;
-    white-space: nowrap;
-}
-
-
-@media (min-width: 881px) {
-    .tabla {
-        margin-left: 30%;
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .contenedor-tabla {
+        border-radius: 12px;
     }
-}
-
-
-@media (max-width: 880px) and (min-width: 587px) {
-    .tabla {
-        margin-left: 20%;
-    }
-}
-
-@media (max-width: 598px) {
-    .tabla {
-        margin-left: 10%;
-    }
-}
-
-@media (max-width: 546px) and (min-width: 300px) {
-    .tabla {
-        margin-left: 10%;
-    }
-}
-
-@media (max-width: 375px) and (min-width: 300px) {
-    .tabla {
-        margin-left: 0;
-    }
-}
-
-@media (max-width: 300px) {
+    
     th, td {
-        font-size: 14px; 
-        padding: 8px; 
-    }
-
-    #save {
         font-size: 14px;
+        padding: 8px 4px;
     }
+    
+    .modal-body input {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
 
-    button.btn-primary {
-        font-size: 12px; 
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .contenedor-tabla {
+        border-radius: 8px;
+    }
+    
+    th, td {
+        font-size: 12px;
+        padding: 6px 3px;
+    }
+    
+    th {
+        font-size: 13px;
+    }
+    
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .modal-body h4 {
+        font-size: 18px;
+    }
+    
+    .modal-body input {
+        font-size: 13px;
+        padding: 6px;
+        margin-bottom: 10px;
+    }
+    
+    #btnGuardar {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 320px) {
+    th, td {
+        font-size: 11px;
+    }
+    
+    .modal-title {
+        font-size: 16px;
+    }
+    
+    .modal-body h4 {
+        font-size: 16px;
     }
 }
