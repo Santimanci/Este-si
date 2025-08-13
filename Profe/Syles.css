@@ -63,7 +63,6 @@ th {
     background-color: #157347;
 }
 
-/* Responsividad para pantallas pequeñas */
 @media (max-width: 768px) {
     .contenedor-tabla {
         border-radius: 12px;

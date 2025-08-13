@@ -27,7 +27,6 @@
         </table>
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="modalUsuario" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -103,13 +102,11 @@
             datos.push({nombre, apellidos, documento, correo});
             pintarDatos();
 
-            // Limpiar campos
             document.getElementById("nombre").value = "";
             document.getElementById("apellidos").value = "";
             document.getElementById("documento").value = "";
             document.getElementById("correo").value = "";
 
-            // Cerrar modal
             bootstrap.Modal.getInstance(document.getElementById('modalUsuario')).hide();
 
             Swal.fire({
