@@ -88,12 +88,28 @@ body {
       <div id="mesasGrid" class="row g-3"></div>
     </section>
 
-    <!-- Reservas -->
-    <section class="my-4">
-      <h2 class="h5 mb-3">Reservas</h2>
-      <div id="reservasGrid" class="row g-3"></div>
-    </section>
+    <!-- Reservas --> 
+<section class="my-4">
+  <h2 class="h5 mb-3">Reservas</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Cliente</th>
+          <th>Teléfono</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Personas</th>
+          <th>Mesa</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="reservasGrid"></tbody>
+    </table>
   </div>
+</section>
+
 
   <!-- Modal Mesa -->
   <div class="modal fade" id="mesaModal" tabindex="-1" aria-hidden="true">
@@ -257,33 +273,32 @@ function renderReservas() {
   const cont = document.getElementById('reservasGrid');
   cont.innerHTML = '';
   reservas.forEach(r => {
-    const col = document.createElement('div');
-    col.className = 'col-12 col-md-6 col-lg-4';
-    col.innerHTML = `
-      <div class="card reserva-card">
-        <div class="card-body">
-          <h5>${r.cliente}</h5>
-          <p class="small mb-1">${r.telefono}</p>
-          <p class="small mb-1">${r.fecha} ${r.hora}</p>
-          <p class="small mb-1">Mesa: ${r.mesa} | ${r.personas} personas</p>
-          <span class="badge bg-secondary">${r.estado}</span>
-        </div>
-        <div class="card-footer d-flex gap-2">
-          <button class="btn btn-warning btn-sm" onclick="openReservaModal('${r.id}')">
-            <i class="bi bi-pencil-square"></i>
-          </button>
-          <button class="btn btn-danger btn-sm" onclick="confirmar('¿Eliminar reserva?', ()=> eliminarReserva('${r.id}'))">
-            <i class="bi bi-trash"></i>
-          </button>
-          ${r.estado === 'Confirmada' ? `
-          <button class="btn btn-success btn-sm" onclick="pagarReserva('${r.id}')">
-            <i class="bi bi-cash-stack"></i> Pagar
-          </button>` : ''}
-        </div>
-      </div>`;
-    cont.appendChild(col);
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${r.cliente}</td>
+      <td>${r.telefono}</td>
+      <td>${r.fecha}</td>
+      <td>${r.hora}</td>
+      <td>${r.personas}</td>
+      <td>${r.mesa}</td>
+      <td><span class="badge bg-secondary">${r.estado}</span></td>
+      <td>
+        <button class="btn btn-warning btn-sm" onclick="openReservaModal('${r.id}')">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="confirmar('¿Eliminar reserva?', ()=> eliminarReserva('${r.id}'))">
+          <i class="bi bi-trash"></i>
+        </button>
+        ${r.estado === 'Confirmada' ? `
+        <button class="btn btn-success btn-sm" onclick="pagarReserva('${r.id}')">
+          <i class="bi bi-cash-stack"></i>
+        </button>` : ''}
+      </td>
+    `;
+    cont.appendChild(row);
   });
 }
+
 
 function openMesaModal(id=null){
   currentMesaId=id;
