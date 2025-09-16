@@ -706,7 +706,7 @@
       function iniciarActualizacionAutomatica() {
         setInterval(() => {
           renderMesas();
-        }, 60000); // Actualizar cada minuto
+        }, 60000); // Actualizar cada minuto  
       }
 
       (function boot() { 
@@ -715,11 +715,11 @@
         reservas = getLS(LS_KEYS.RESERVAS); 
         renderMesas(); 
         renderReservas(); 
-        populateMesaFilter(); // Inicializar el filtro de mesas
+        populateMesaFilter();
         iniciarActualizacionAutomatica();
         notify('Datos cargados'); 
       })();
     </script>
 </body>
 
-</html>
+</html> 
