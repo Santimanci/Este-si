@@ -73,6 +73,17 @@
       width: 50%;
       height: 40%;
     }
+
+    .filter-section {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .filter-toggle {
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -108,7 +119,52 @@
 
     <!-- Reservas -->
     <section class="my-4">
-      <h2 class="h5 mb-3">Reservas</h2>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0">Reservas</h2>
+        <button class="btn btn-outline-primary btn-sm filter-toggle" onclick="toggleFilters()">
+          <i class="bi bi-funnel"></i> Filtros
+        </button>
+      </div>
+      
+      <!-- Panel de Filtros -->
+      <div class="filter-section mb-3" id="filtersPanel" style="display: none;">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label">Fecha desde</label>
+            <input type="date" class="form-control" id="filterFechaDesde">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Fecha hasta</label>
+            <input type="date" class="form-control" id="filterFechaHasta">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <select class="form-select" id="filterEstado">
+              <option value="">Todos los estados</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Confirmada">Confirmada</option>
+              <option value="Cancelada">Cancelada</option>
+              <option value="Finalizada">Finalizada</option>
+              <option value="No Show">No Show</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Mesa</label>
+            <select class="form-select" id="filterMesa">
+              <option value="">Todas las mesas</option>
+            </select>
+          </div>
+          <div class="col-12 d-flex justify-content-end gap-2">
+            <button class="btn btn-secondary" onclick="clearFilters()">
+              <i class="bi bi-x-circle"></i> Limpiar
+            </button>
+            <button class="btn btn-primary" onclick="applyFilters()">
+              <i class="bi bi-check-circle"></i> Aplicar
+            </button>
+          </div>
+        </div>
+      </div>
+      
       <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle">
           <thead class="table-dark">
@@ -116,7 +172,8 @@
               <th>Cliente</th>
               <th>Teléfono</th>
               <th>Fecha</th>
-              <th>Hora</th>
+              <th>Hora Inicio</th>
+              <th>Hora Fin</th>
               <th>Personas</th>
               <th>Mesa</th>
               <th>Estado</th>
@@ -191,9 +248,13 @@
                 <label class="form-label">Fecha</label>
                 <input id="reservaFecha" type="date" class="form-control" required />
               </div>
-              <div class="col-6">
-                <label class="form-label">Hora</label>
-                <input id="reservaHora" type="time" class="form-control" required />
+              <div class="col-3">
+                <label class="form-label">Hora Inicio</label>
+                <input id="reservaHoraInicio" type="time" class="form-control" required />
+              </div>
+              <div class="col-3">
+                <label class="form-label">Hora Fin</label>
+                <input id="reservaHoraFin" type="time" class="form-control" required />
               </div>
               <div class="col-6">
                 <label class="form-label">Personas</label>
@@ -248,7 +309,39 @@
       let reservas = [];
       let currentMesaId = null;
       let currentReservaId = null;
+      let filteredReservas = [];
+      let filtersActive = false;
 
+      // Función para obtener la fecha actual en formato YYYY-MM-DD
+      function getCurrentDate() {
+        const today = new Date();
+        return today.toISOString().split('T')[0];
+      }
+
+      // Función para obtener la hora actual en formato HH:MM
+      function getCurrentTime() {
+        const now = new Date();
+        return now.toTimeString().slice(0, 5);
+      }
+
+      // Función para verificar si una fecha es hoy
+      function isToday(date) {
+        return date === getCurrentDate();
+      }
+
+      // Función para verificar si una reserva está activa ahora
+      function isReservaActiva(reserva) {
+        if (!isToday(reserva.fecha)) return false;
+        
+        const now = new Date();
+        const currentTime = now.toTimeString().slice(0, 5);
+        
+        // Crear objetos Date para comparar horas
+        const startTime = reserva.horaInicio;
+        const endTime = reserva.horaFin;
+        
+        return currentTime >= startTime && currentTime <= endTime;
+      }
 
       function notify(msg, type = 'success') {
         Swal.fire({
@@ -261,12 +354,9 @@
         });
       }
 
-
-
       function confirmar(msg, cb) {
         Swal.fire({ title: msg, icon: 'warning', showCancelButton: true, confirmButtonText: 'Sí', cancelButtonText: 'Cancelar' })
           .then(res => { if (res.isConfirmed) cb(); });
-
       }
 
       function initMesasDefault() {
@@ -274,7 +364,28 @@
         if (!localStorage.getItem(LS_KEYS.RESERVAS)) setLS(LS_KEYS.RESERVAS, []);
       }
 
+      function actualizarEstadoMesas() {
+        // Primero, establecer todas las mesas como disponibles
+        mesas.forEach(mesa => {
+          if (mesa.estado !== 'deshabilitada') {
+            mesa.estado = 'disponible';
+          }
+        });
+
+        // Luego, buscar reservas activas para hoy y marcar las mesas como ocupadas
+        const hoy = getCurrentDate();
+        reservas.forEach(reserva => {
+          if (reserva.estado === 'Confirmada' && reserva.fecha === hoy && isReservaActiva(reserva)) {
+            const mesa = mesas.find(m => m.id === reserva.mesa);
+            if (mesa && mesa.estado !== 'deshabilitada') {
+              mesa.estado = 'ocupada';
+            }
+          }
+        });
+      }
+
       function renderMesas() {
+        actualizarEstadoMesas();
         const cont = document.getElementById('mesasGrid');
         cont.innerHTML = '';
         mesas.forEach(m => {
@@ -305,16 +416,27 @@
       function renderReservas() {
         const cont = document.getElementById('reservasGrid');
         cont.innerHTML = '';
-        reservas.forEach(r => {
+        
+        const reservasToRender = filtersActive ? filteredReservas : reservas;
+        
+        if (reservasToRender.length === 0) {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td colspan="9" class="text-center">No hay reservas para mostrar</td>`;
+          cont.appendChild(row);
+          return;
+        }
+        
+        reservasToRender.forEach(r => {
           const row = document.createElement('tr');
           row.innerHTML = `
         <td>${r.cliente}</td>
         <td>${r.telefono}</td>
         <td>${r.fecha}</td>
-        <td>${r.hora}</td>
+        <td>${r.horaInicio}</td>
+        <td>${r.horaFin}</td>
         <td>${r.personas}</td>
         <td>${r.mesa}</td>
-        <td><span class="badge bg-secondary">${r.estado}</span></td>
+        <td><span class="badge ${getEstadoBadgeClass(r.estado)}">${r.estado}</span></td>
         <td>
           <button class="btn btn-warning btn-sm" onclick="openReservaModal('${r.id}')">
             <i class="bi bi-pencil-square"></i>
@@ -332,6 +454,16 @@
         });
       }
 
+      function getEstadoBadgeClass(estado) {
+        switch(estado) {
+          case 'Confirmada': return 'bg-primary';
+          case 'Pendiente': return 'bg-warning text-dark';
+          case 'Cancelada': return 'bg-danger';
+          case 'Finalizada': return 'bg-success';
+          case 'No Show': return 'bg-secondary';
+          default: return 'bg-secondary';
+        }
+      }
 
       function openMesaModal(id = null) {
         currentMesaId = id;
@@ -350,17 +482,27 @@
         currentReservaId = id;
         const form = document.getElementById('reservaForm'); form.reset();
         const selectMesa = document.getElementById('reservaMesa');
-        const disponibles = mesas.filter(m => m.estado === 'disponible');
+        
+        // Establecer fecha y hora por defecto
+        document.getElementById('reservaFecha').value = getCurrentDate();
+        document.getElementById('reservaHoraInicio').value = '19:00';
+        document.getElementById('reservaHoraFin').value = '21:00';
+        
+        // Cargar mesas disponibles
+        const disponibles = mesas.filter(m => m.estado !== 'deshabilitada');
         selectMesa.innerHTML = disponibles.map(m => `<option value="${m.id}">${m.id}</option>`).join('');
+        
         if (id) {
           const r = reservas.find(r => r.id === id);
           document.getElementById('reservaCliente').value = r.cliente;
           document.getElementById('reservaTelefono').value = r.telefono;
           document.getElementById('reservaFecha').value = r.fecha;
-          document.getElementById('reservaHora').value = r.hora;
+          document.getElementById('reservaHoraInicio').value = r.horaInicio;
+          document.getElementById('reservaHoraFin').value = r.horaFin;
           document.getElementById('reservaPersonas').value = r.personas;
           document.getElementById('reservaMesa').value = r.mesa;
           document.getElementById('reservaEstado').value = r.estado;
+          document.getElementById('reservaOcasión').value = r.ocasion || 'ninguna';
         } else if (mesaId) {
           if (disponibles.some(m => m.id === mesaId)) {
             document.getElementById('reservaMesa').value = mesaId;
@@ -369,6 +511,87 @@
           }
         }
         new bootstrap.Modal('#reservaModal').show();
+      }
+
+      function validarHorasReserva(horaInicio, horaFin) {
+        if (horaInicio >= horaFin) {
+          notify('La hora de inicio debe ser anterior a la hora de fin', 'error');
+          return false;
+        }
+        return true;
+      }
+
+      function verificarDisponibilidadMesa(mesaId, fecha, horaInicio, horaFin, excluirReservaId = null) {
+        // Verificar si la mesa está disponible en el rango de horas solicitado
+        const reservasExistentes = reservas.filter(r => 
+          r.mesa === mesaId && 
+          r.fecha === fecha && 
+          r.estado === 'Confirmada' &&
+          r.id !== excluirReservaId
+        );
+        
+        for (const reserva of reservasExistentes) {
+          // Verificar si hay superposición de horarios
+          if (!(horaFin <= reserva.horaInicio || horaInicio >= reserva.horaFin)) {
+            return false; // Hay conflicto de horarios
+          }
+        }
+        
+        return true; // No hay conflictos
+      }
+
+      // Funciones para los filtros
+      function toggleFilters() {
+        const filtersPanel = document.getElementById('filtersPanel');
+        filtersPanel.style.display = filtersPanel.style.display === 'none' ? 'block' : 'none';
+      }
+
+      function applyFilters() {
+        const fechaDesde = document.getElementById('filterFechaDesde').value;
+        const fechaHasta = document.getElementById('filterFechaHasta').value;
+        const estado = document.getElementById('filterEstado').value;
+        const mesa = document.getElementById('filterMesa').value;
+        
+        filteredReservas = reservas.filter(reserva => {
+          // Filtro por fecha
+          if (fechaDesde && reserva.fecha < fechaDesde) return false;
+          if (fechaHasta && reserva.fecha > fechaHasta) return false;
+          
+          // Filtro por estado
+          if (estado && reserva.estado !== estado) return false;
+          
+          // Filtro por mesa
+          if (mesa && reserva.mesa !== mesa) return false;
+          
+          return true;
+        });
+        
+        filtersActive = true;
+        renderReservas();
+        notify('Filtros aplicados');
+      }
+
+      function clearFilters() {
+        document.getElementById('filterFechaDesde').value = '';
+        document.getElementById('filterFechaHasta').value = '';
+        document.getElementById('filterEstado').value = '';
+        document.getElementById('filterMesa').value = '';
+        
+        filtersActive = false;
+        renderReservas();
+        notify('Filtros limpiados');
+      }
+
+      function populateMesaFilter() {
+        const filterMesa = document.getElementById('filterMesa');
+        // Obtener todas las mesas únicas de las reservas
+        const mesasUnicas = [...new Set(reservas.map(r => r.mesa))].sort();
+        
+        // Limpiar y agregar opciones
+        filterMesa.innerHTML = '<option value="">Todas las mesas</option>';
+        mesasUnicas.forEach(mesa => {
+          filterMesa.innerHTML += `<option value="${mesa}">${mesa}</option>`;
+        });
       }
 
       document.getElementById('btnGuardarMesa').onclick = () => {
@@ -394,32 +617,44 @@
         const cliente = document.getElementById('reservaCliente').value.trim();
         const telefono = document.getElementById('reservaTelefono').value.trim();
         const fecha = document.getElementById('reservaFecha').value;
-        const hora = document.getElementById('reservaHora').value;
+        const horaInicio = document.getElementById('reservaHoraInicio').value;
+        const horaFin = document.getElementById('reservaHoraFin').value;
         const personas = parseInt(document.getElementById('reservaPersonas').value);
         const mesa = document.getElementById('reservaMesa').value;
         const estado = document.getElementById('reservaEstado').value;
-        if (!cliente || !fecha || !hora) return notify('Datos incompletos', 'error');
-
-        if (!currentReservaId && reservas.some(r => r.mesa === mesa && r.fecha === fecha && r.hora === hora)) {
-          return notify('Ya existe una reserva para esa mesa y hora', 'error');
+        const ocasion = document.getElementById('reservaOcasión').value;
+        
+        if (!cliente || !fecha || !horaInicio || !horaFin) return notify('Datos incompletos', 'error');
+        if (!validarHorasReserva(horaInicio, horaFin)) return;
+        
+        // Verificar disponibilidad de la mesa
+        if (!verificarDisponibilidadMesa(mesa, fecha, horaInicio, horaFin, currentReservaId)) {
+          return notify('La mesa no está disponible en el horario seleccionado', 'error');
         }
 
         if (currentReservaId) {
           const r = reservas.find(r => r.id === currentReservaId);
-          Object.assign(r, { cliente, telefono, fecha, hora, personas, mesa, estado });
+          Object.assign(r, { cliente, telefono, fecha, horaInicio, horaFin, personas, mesa, estado, ocasion });
         } else {
-          reservas.push({ id: 'r' + Date.now(), cliente, telefono, fecha, hora, personas, mesa, estado });
-        }
-
-        if (estado === 'Confirmada') {
-          const mesaObj = mesas.find(m => m.id === mesa);
-          if (mesaObj) mesaObj.estado = 'ocupada';
+          reservas.push({ 
+            id: 'r' + Date.now(), 
+            cliente, 
+            telefono, 
+            fecha, 
+            horaInicio, 
+            horaFin, 
+            personas, 
+            mesa, 
+            estado, 
+            ocasion 
+          });
         }
 
         setLS(LS_KEYS.MESAS, mesas);
         setLS(LS_KEYS.RESERVAS, reservas);
         renderMesas();
         renderReservas();
+        populateMesaFilter(); // Actualizar el filtro de mesas
         bootstrap.Modal.getInstance(document.getElementById('reservaModal')).hide();
         currentReservaId = null;
         notify('Reserva guardada');
@@ -437,8 +672,6 @@
         }).then(res => {
           if (res.isConfirmed) {
             r.estado = 'Finalizada';
-            const mesaObj = mesas.find(m => m.id === r.mesa);
-            if (mesaObj) mesaObj.estado = 'disponible';
             setLS(LS_KEYS.MESAS, mesas);
             setLS(LS_KEYS.RESERVAS, reservas);
             renderMesas();
@@ -448,10 +681,44 @@
         });
       }
 
-      function eliminarMesa(id) { mesas = mesas.filter(m => m.id !== id); setLS(LS_KEYS.MESAS, mesas); renderMesas(); notify('Mesa eliminada'); }
-      function eliminarReserva(id) { reservas = reservas.filter(r => r.id !== id); setLS(LS_KEYS.RESERVAS, reservas); renderReservas(); notify('Reserva eliminada'); }
+      function eliminarMesa(id) { 
+        mesas = mesas.filter(m => m.id !== id); 
+        // También eliminar reservas asociadas a esta mesa
+        reservas = reservas.filter(r => r.mesa !== id);
+        setLS(LS_KEYS.MESAS, mesas); 
+        setLS(LS_KEYS.RESERVAS, reservas);
+        renderMesas(); 
+        renderReservas();
+        populateMesaFilter(); // Actualizar el filtro de mesas
+        notify('Mesa eliminada'); 
+      }
+      
+      function eliminarReserva(id) { 
+        reservas = reservas.filter(r => r.id !== id); 
+        setLS(LS_KEYS.RESERVAS, reservas); 
+        renderMesas();
+        renderReservas(); 
+        populateMesaFilter(); // Actualizar el filtro de mesas
+        notify('Reserva eliminada'); 
+      }
 
-      (function boot() { initMesasDefault(); mesas = getLS(LS_KEYS.MESAS); reservas = getLS(LS_KEYS.RESERVAS); renderMesas(); renderReservas(); notify('Datos cargados'); })();
+      // Actualizar el estado de las mesas cada minuto
+      function iniciarActualizacionAutomatica() {
+        setInterval(() => {
+          renderMesas();
+        }, 60000); // Actualizar cada minuto
+      }
+
+      (function boot() { 
+        initMesasDefault(); 
+        mesas = getLS(LS_KEYS.MESAS); 
+        reservas = getLS(LS_KEYS.RESERVAS); 
+        renderMesas(); 
+        renderReservas(); 
+        populateMesaFilter(); // Inicializar el filtro de mesas
+        iniciarActualizacionAutomatica();
+        notify('Datos cargados'); 
+      })();
     </script>
 </body>
 
