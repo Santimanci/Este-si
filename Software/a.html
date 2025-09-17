@@ -125,7 +125,7 @@
           <i class="bi bi-funnel"></i> Filtros
         </button>
       </div>
-      
+
       <!-- Panel de Filtros -->
       <div class="filter-section mb-3" id="filtersPanel" style="display: none;">
         <div class="row g-3">
@@ -164,7 +164,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle">
           <thead class="table-dark">
@@ -332,14 +332,14 @@
       // Función para verificar si una reserva está activa ahora
       function isReservaActiva(reserva) {
         if (!isToday(reserva.fecha)) return false;
-        
+
         const now = new Date();
         const currentTime = now.toTimeString().slice(0, 5);
-        
+
         // Crear objetos Date para comparar horas
         const startTime = reserva.horaInicio;
         const endTime = reserva.horaFin;
-        
+
         return currentTime >= startTime && currentTime <= endTime;
       }
 
@@ -416,16 +416,16 @@
       function renderReservas() {
         const cont = document.getElementById('reservasGrid');
         cont.innerHTML = '';
-        
+
         const reservasToRender = filtersActive ? filteredReservas : reservas;
-        
+
         if (reservasToRender.length === 0) {
           const row = document.createElement('tr');
           row.innerHTML = `<td colspan="9" class="text-center">No hay reservas para mostrar</td>`;
           cont.appendChild(row);
           return;
         }
-        
+
         reservasToRender.forEach(r => {
           const row = document.createElement('tr');
           row.innerHTML = `
@@ -455,7 +455,7 @@
       }
 
       function getEstadoBadgeClass(estado) {
-        switch(estado) {
+        switch (estado) {
           case 'Confirmada': return 'bg-primary';
           case 'Pendiente': return 'bg-warning text-dark';
           case 'Cancelada': return 'bg-danger';
@@ -482,16 +482,16 @@
         currentReservaId = id;
         const form = document.getElementById('reservaForm'); form.reset();
         const selectMesa = document.getElementById('reservaMesa');
-        
+
         // Establecer fecha y hora por defecto
         document.getElementById('reservaFecha').value = getCurrentDate();
         document.getElementById('reservaHoraInicio').value = '19:00';
         document.getElementById('reservaHoraFin').value = '21:00';
-        
+
         // Cargar mesas disponibles
         const disponibles = mesas.filter(m => m.estado !== 'deshabilitada');
         selectMesa.innerHTML = disponibles.map(m => `<option value="${m.id}">${m.id}</option>`).join('');
-        
+
         if (id) {
           const r = reservas.find(r => r.id === id);
           document.getElementById('reservaCliente').value = r.cliente;
@@ -523,20 +523,20 @@
 
       function verificarDisponibilidadMesa(mesaId, fecha, horaInicio, horaFin, excluirReservaId = null) {
         // Verificar si la mesa está disponible en el rango de horas solicitado
-        const reservasExistentes = reservas.filter(r => 
-          r.mesa === mesaId && 
-          r.fecha === fecha && 
+        const reservasExistentes = reservas.filter(r =>
+          r.mesa === mesaId &&
+          r.fecha === fecha &&
           r.estado === 'Confirmada' &&
           r.id !== excluirReservaId
         );
-        
+
         for (const reserva of reservasExistentes) {
           // Verificar si hay superposición de horarios
           if (!(horaFin <= reserva.horaInicio || horaInicio >= reserva.horaFin)) {
             return false; // Hay conflicto de horarios
           }
         }
-        
+
         return true; // No hay conflictos
       }
 
@@ -551,21 +551,21 @@
         const fechaHasta = document.getElementById('filterFechaHasta').value;
         const estado = document.getElementById('filterEstado').value;
         const mesa = document.getElementById('filterMesa').value;
-        
+
         filteredReservas = reservas.filter(reserva => {
           // Filtro por fecha
           if (fechaDesde && reserva.fecha < fechaDesde) return false;
           if (fechaHasta && reserva.fecha > fechaHasta) return false;
-          
+
           // Filtro por estado
           if (estado && reserva.estado !== estado) return false;
-          
+
           // Filtro por mesa
           if (mesa && reserva.mesa !== mesa) return false;
-          
+
           return true;
         });
-        
+
         filtersActive = true;
         renderReservas();
         notify('Filtros aplicados');
@@ -576,7 +576,7 @@
         document.getElementById('filterFechaHasta').value = '';
         document.getElementById('filterEstado').value = '';
         document.getElementById('filterMesa').value = '';
-        
+
         filtersActive = false;
         renderReservas();
         notify('Filtros limpiados');
@@ -586,7 +586,7 @@
         const filterMesa = document.getElementById('filterMesa');
         // Obtener todas las mesas únicas de las reservas
         const mesasUnicas = [...new Set(reservas.map(r => r.mesa))].sort();
-        
+
         // Limpiar y agregar opciones
         filterMesa.innerHTML = '<option value="">Todas las mesas</option>';
         mesasUnicas.forEach(mesa => {
@@ -623,10 +623,10 @@
         const mesa = document.getElementById('reservaMesa').value;
         const estado = document.getElementById('reservaEstado').value;
         const ocasion = document.getElementById('reservaOcasión').value;
-        
+
         if (!cliente || !fecha || !horaInicio || !horaFin) return notify('Datos incompletos', 'error');
         if (!validarHorasReserva(horaInicio, horaFin)) return;
-        
+
         // Verificar disponibilidad de la mesa
         if (!verificarDisponibilidadMesa(mesa, fecha, horaInicio, horaFin, currentReservaId)) {
           return notify('La mesa no está disponible en el horario seleccionado', 'error');
@@ -636,17 +636,17 @@
           const r = reservas.find(r => r.id === currentReservaId);
           Object.assign(r, { cliente, telefono, fecha, horaInicio, horaFin, personas, mesa, estado, ocasion });
         } else {
-          reservas.push({ 
-            id: 'r' + Date.now(), 
-            cliente, 
-            telefono, 
-            fecha, 
-            horaInicio, 
-            horaFin, 
-            personas, 
-            mesa, 
-            estado, 
-            ocasion 
+          reservas.push({
+            id: 'r' + Date.now(),
+            cliente,
+            telefono,
+            fecha,
+            horaInicio,
+            horaFin,
+            personas,
+            mesa,
+            estado,
+            ocasion
           });
         }
 
@@ -681,25 +681,25 @@
         });
       }
 
-      function eliminarMesa(id) { 
-        mesas = mesas.filter(m => m.id !== id); 
+      function eliminarMesa(id) {
+        mesas = mesas.filter(m => m.id !== id);
         // También eliminar reservas asociadas a esta mesa
         reservas = reservas.filter(r => r.mesa !== id);
-        setLS(LS_KEYS.MESAS, mesas); 
+        setLS(LS_KEYS.MESAS, mesas);
         setLS(LS_KEYS.RESERVAS, reservas);
-        renderMesas(); 
+        renderMesas();
         renderReservas();
         populateMesaFilter(); // Actualizar el filtro de mesas
-        notify('Mesa eliminada'); 
+        notify('Mesa eliminada');
       }
-      
-      function eliminarReserva(id) { 
-        reservas = reservas.filter(r => r.id !== id); 
-        setLS(LS_KEYS.RESERVAS, reservas); 
+
+      function eliminarReserva(id) {
+        reservas = reservas.filter(r => r.id !== id);
+        setLS(LS_KEYS.RESERVAS, reservas);
         renderMesas();
-        renderReservas(); 
+        renderReservas();
         populateMesaFilter(); // Actualizar el filtro de mesas
-        notify('Reserva eliminada'); 
+        notify('Reserva eliminada');
       }
 
       // Actualizar el estado de las mesas cada minuto
@@ -709,17 +709,17 @@
         }, 60000); // Actualizar cada minuto  
       }
 
-      (function boot() { 
-        initMesasDefault(); 
-        mesas = getLS(LS_KEYS.MESAS); 
-        reservas = getLS(LS_KEYS.RESERVAS); 
-        renderMesas(); 
-        renderReservas(); 
+      (function boot() {
+        initMesasDefault();
+        mesas = getLS(LS_KEYS.MESAS);
+        reservas = getLS(LS_KEYS.RESERVAS);
+        renderMesas();
+        renderReservas();
         populateMesaFilter();
         iniciarActualizacionAutomatica();
-        notify('Datos cargados'); 
+        notify('Datos cargados');
       })();
     </script>
 </body>
 
-</html> 
+</html>
