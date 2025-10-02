@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Pro | Gestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #111827;
+            --secondary: #f97316;
+            --accent: #3b82f6;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Header Superior */
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: var(--surface);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Panel Lateral */
+        .side-panel {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            bottom: 0;
+            width: 260px;
+            background: var(--surface);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 900;
+        }
+        
+        .nav-section {
+            padding: 0 25px;
+            margin-bottom: 30px;
+        }
+        
+        .nav-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: #475569;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(17, 24, 39, 0.2);
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+        
+        /* Contenido Principal */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            margin-top: 70px;
+            padding: 30px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .page-subtitle {
+            font-size: 1rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        
+        .action-bar {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1f2937;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 24, 39, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: var(--primary);
+        }
+        
+        .btn-accent {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+        }
+        
+        /* Tarjetas de Estadísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2.5rem;
+            opacity: 0.1;
+            color: var(--primary);
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        /* Grid de Mesas */
+        .mesas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .mesa-card {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .mesa-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mesa-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .mesa-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .mesa-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-disponible {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .status-ocupada {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+        }
+        
+        .status-deshabilitada {
+            background: rgba(107, 114, 128, 0.1);
+            color: #6b7280;
+        }
+        
+        .mesa-body {
+            padding: 20px;
+        }
+        
+        .mesa-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .mesa-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64748b;
+        }
+        
+        .mesa-detail i {
+            width: 20px;
+            color: var(--primary);
+        }
+        
+        /* Tabla de Reservas */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            background: var(--surface);
+        }
+        
+        .reservas-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .reservas-table th {
+            background: #f8fafc;
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .reservas-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .reservas-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .reserva-estado {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .estado-pendiente {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .estado-confirmada {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+        }
+        
+        .estado-cancelada {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .estado-finalizada {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .estado-no-show {
+            background: rgba(107, 114, 128, 0.1);
+            color: #6b7280;
+        }
+        
+        .action-buttons-small {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-small {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-small:hover {
+            transform: translateY(-1px);
+        }
+        
+        /* Filtros */
+        .filters-container {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filters-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        .filter-input {
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            background: var(--surface);
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+        }
+        
+        /* Modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .modal {
+            background: var(--surface);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: var(--danger);
+        }
+        
+        .modal-body {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border);
+            background: #f8fafc;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: var(--surface);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+        }
+        
+        .form-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 6px;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 6px;
+            display: none;
+        }
+        
+        /* Mensajes */
+        .messages-container {
+            position: fixed;
+            top: 90px;
+            right: 30px;
+            z-index: 2100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 16px 20px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .message-success {
+            background: var(--success);
+        }
+        
+        .message-error {
+            background: var(--danger);
+        }
+        
+        .message-info {
+            background: var(--primary);
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Imágenes de Ocasiones */
+        .ocasion-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ocasion-img:hover {
+            transform: scale(1.1);
+            border-color: var(--primary);
+        }
+        
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+        
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .image-modal-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .side-panel {
+                width: 80px;
+            }
+            
+            .side-panel .nav-title,
+            .side-panel .nav-item span {
+                display: none;
+            }
+            
+            .side-panel .nav-item {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 0 20px;
+            }
+            
+            .main-content {
+                padding: 20px;
+                margin-left: 0;
+            }
+            
+            .side-panel {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .side-panel.open {
+                transform: translateX(0);
+            }
+            
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .action-bar {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mesas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal {
+                max-width: 100%;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .duracion-info {
+            background-color: #f0f9ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 0.875rem;
+            color: #0c4a6e;
+            border-left: 3px solid #0ea5e9;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <span>Restaurant Pro</span>
+            </div>
+            
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="user-menu">
+                <div class="user-avatar">
+                    <span>AM</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Panel Lateral -->
+        <nav class="side-panel">
+            <div class="nav-section">
+                <div class="nav-title">Principal</div>
+                <div class="nav-item active" data-section="mesas">
+                    <i class="fas fa-table"></i>
+                    <span>Mesas</span>
+                </div>
+                <div class="nav-item" data-section="reservas">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Reservas</span>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Configuración</div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Ajustes</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Ayuda</span>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <!-- Sección de Mesas -->
+            <section id="seccionMesas">
+                <div class="content-header">
+                    <div>
+                        <h1 class="page-title">Gestión de Mesas</h1>
+                        <p class="page-subtitle">Administra y visualiza el estado de todas las mesas</p>
+                    </div>
+                    <div class="action-bar">
+                        <button onclick="abrirModalAgregarMesa()" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>Agregar Mesa
+                        </button>
+                        <button id="btnVerReservas" class="btn btn-secondary">
+                            <i class="fas fa-calendar"></i>Ver Reservas
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Estadísticas -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Mesas</div>
+                        <div class="stat-value" id="total-mesas">0</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5% vs ayer</span>
+                        </div>
+                        <i class="fas fa-table stat-icon"></i>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Mesas Disponibles</div>
+                        <div class="stat-value" id="mesas-disponibles">0</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12% vs ayer</span>
+                        </div>
+                        <i class="fas fa-check-circle stat-icon"></i>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Reservas Hoy</div>
+                        <div class="stat-value" id="reservas-hoy">0</div>
+                        <div class="stat-trend trend-down">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>3% vs ayer</span>
+                        </div>
+                        <i class="fas fa-calendar-day stat-icon"></i>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Ocupación</div>
+                        <div class="stat-value" id="ocupacion">0%</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8% vs ayer</span>
+                        </div>
+                        <i class="fas fa-chart-pie stat-icon"></i>
+                    </div>
+                </div>
+                
+                <!-- Grid de Mesas -->
+                <div class="mesas-grid" id="mesasGrid"></div>
+            </section>
+            
+            <!-- Sección de Reservas (oculta inicialmente) -->
+            <section id="seccionReservas" class="hidden">
+                <div class="content-header">
+                    <div>
+                        <h1 class="page-title">Gestión de Reservas</h1>
+                        <p class="page-subtitle">Administra todas las reservas del restaurante</p>
+                    </div>
+                    <div class="action-bar">
+                        <button id="btnAgregarReserva" class="btn btn-accent">
+                            <i class="fas fa-plus"></i>Nueva Reserva
+                        </button>
+                        <button id="btnVolverMesas" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>Volver a Mesas
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Filtros -->
+                <div class="filters-container">
+                    <h3 class="filters-title">Filtrar Reservas</h3>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Filtrar por fecha</label>
+                            <input type="date" id="filtroFecha" class="filter-input">
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Filtrar por estado</label>
+                            <select id="filtroEstado" class="filter-input">
+                                <option value="">Todos</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Confirmada">Confirmada</option>
+                                <option value="Cancelada">Cancelada</option>
+                                <option value="Finalizada">Finalizada</option>
+                                <option value="No Show">No Show</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">&nbsp;</label>
+                            <button id="btnAplicarFiltros" class="btn btn-primary">
+                                <i class="fas fa-filter"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabla de reservas -->
+                <div class="table-container">
+                    <table class="reservas-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Personas</th>
+                                <th>Fecha</th>
+                                <th>Horario</th>
+                                <th>Ocasión</th>
+                                <th>Mesa</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyReservas">
+                            <!-- Las reservas se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Modales -->
+    <!-- Modal para agregar/editar mesa -->
+    <div id="agregarMesa" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="am-titulo" class="modal-title">Agregar Mesa</h2>
+                <button class="modal-close" onclick="cerrarModalAgregarMesa()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Número de mesa *</label>
+                    <input id="am-numero" type="number" min="1" class="form-input" placeholder="Ej: 1">
+                    <span id="error-numero" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nombre completo</label>
+                    <p id="am-nombre-display" class="form-text">mesa-</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Capacidad *</label>
+                    <input id="am-capacidad" type="number" class="form-input" placeholder="EJ: 4">
+                    <span id="error-capacidad" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ubicación</label>
+                    <input id="am-ubicacion" type="text" class="form-input" placeholder="EJ: Jardín">
+                    <span id="error-ubicacion" class="error-message"></span>
+                </div>
+                <div id="am-estado-wrapper" class="form-group hidden">
+                    <label class="form-label">Estado</label>
+                    <select id="am-estado" class="form-input">
+                        <option value="disponible">Disponible</option>
+                        <option value="deshabilitada">Deshabilitada</option>
+                    </select>
+                    <p class="form-text">El estado "Ocupada" se gestiona automáticamente por las reservas.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="am-cancelar" class="btn btn-secondary">Cancelar</button>
+                <button id="am-guardar" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de detalle de mesa -->
+    <div id="detalleMesa" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Detalle de la mesa</h2>
+                <button class="modal-close" onclick="cerrarModalDetalle()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <p class="form-label">Nombre:</p>
+                    <p id="dm-nombre" class="form-text"></p>
+                </div>
+                <div class="form-group">
+                    <p class="form-label">Capacidad:</p>
+                    <p id="dm-capacidad" class="form-text"></p>
+                </div>
+                <div class="form-group">
+                    <p class="form-label">Ubicación:</p>
+                    <p id="dm-ubicacion" class="form-text"></p>
+                </div>
+                <div class="form-group">
+                    <p class="form-label">Estado:</p>
+                    <span id="dm-estado" class="reserva-estado"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="dm-editar" class="btn btn-secondary">Editar</button>
+                <button id="dm-reservar" class="btn btn-accent">Nueva Reserva</button>
+                <button id="dm-eliminar" class="btn btn-danger">Eliminar</button>
+                <button id="dm-cerrar" class="btn btn-primary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de reserva -->
+    <div id="modalReserva" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="tituloModalReserva" class="modal-title">Nueva Reserva</h2>
+                <button class="modal-close" onclick="cerrarModalReserva()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre Del Cliente *</label>
+                    <input id="inputNombreReserva" type="text" class="form-input">
+                    <span id="errorNombreReserva" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Número de personas *</label>
+                    <input id="inputPersonasReserva" type="number" min="1" class="form-input">
+                    <span id="errorPersonasReserva" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fecha de reserva *</label>
+                    <input id="inputFechaReserva" type="date" class="form-input">
+                    <span id="errorFechaReserva" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Hora de Inicio *</label>
+                    <input id="inputHoraInicioReserva" type="time" min="08:00" max="23:00" class="form-input">
+                    <span id="errorHoraInicioReserva" class="error-message"></span>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> Horario de atención: 8:00 AM - 11:00 PM
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Hora de Fin *</label>
+                    <input id="inputHoraFinReserva" type="time" min="08:00" max="23:00" class="form-input">
+                    <span id="errorHoraFinReserva" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ocasión Especial *</label>
+                    <select id="selectOcasionReserva" class="form-input">
+                        <option value="Ninguna">Ninguna</option>
+                        <option value="Cumpleaños">Cumpleaños</option>
+                        <option value="Aniversario">Aniversario</option>
+                        <option value="Reunión de Negocios">Reunión de Negocios</option>
+                        <option value="Cena Romántica">Cena Romántica</option>
+                        <option value="Celebración Familiar">Celebración Familiar</option>
+                        <option value="Evento Corporativo">Evento Corporativo</option>
+                        <option value="Graduación">Graduación</option>
+                    </select>
+                    <div id="duracionEvento" class="duracion-info">
+                        <i class="fas fa-clock mr-1"></i> Duración de la reserva: <span id="tiempoDuracion">0</span> horas
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mesa Asignada *</label>
+                    <select id="selectMesaReserva" class="form-input">
+                        <option value="">Seleccione una mesa</option>
+                    </select>
+                    <span id="errorMesaReserva" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notas Adicionales</label>
+                    <textarea id="textareaNotasReserva" class="form-input" rows="3"></textarea>
+                </div>
+                <div id="rs-estado-wrapper" class="form-group hidden">
+                    <label class="form-label">Estado de la reserva</label>
+                    <select id="selectEstadoReserva" class="form-input">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Confirmada">Confirmada</option>
+                        <option value="Cancelada">Cancelada</option>
+                        <option value="No Show">No Show</option>
+                    </select>
+                    <p class="form-text">Cambiar estado (Confirmada / Cancelada / No Show). El estado Finalizada se asigna al pagar.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelarReserva" class="btn btn-secondary">Cancelar</button>
+                <button id="btnGuardarReserva" class="btn btn-primary">Guardar Reserva</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="modalConfirmacion" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirmar acción</h2>
+                <button class="modal-close" onclick="cerrarModalConfirmacion()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmacionMensaje" class="form-text"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnConfirmarCancelar" class="btn btn-secondary">Cancelar</button>
+                <button id="btnConfirmarAceptar" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de imagen -->
+    <div id="modalImagen" class="image-modal hidden">
+        <div class="image-modal-content">
+            <button id="modalImagenClose" class="image-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImagenImg" src="" alt="Imagen ocasión" class="image-modal-img">
+        </div>
+    </div>
+
+    <!-- Contenedor para mensajes -->
+    <div id="contenedorMensajes" class="messages-container"></div>
+
+    <script>
+        // Variables globales
+        let reservaEditando = null;
+        let mesaPreseleccionada = null;
+        let confirmacionCallback = null;
+        let estadoUpdateInterval = null;
+
+        // ---------------------------
+        // Helpers localStorage (seguros)
+        // ---------------------------
+        function safeParse(key) {
+            try {
+                const v = localStorage.getItem(key);
+                return v ? JSON.parse(v) : null;
+            } catch (e) {
+                console.warn(`Error parseando ${key}:`, e);
+                return null;
+            }
+        }
+
+        function getMesas() {
+            return safeParse('mesas') || [];
+        }
+
+        // Estados válidos (incluye "No Show")
+        const ESTADOS_VALIDOS = ['Pendiente','Confirmada','Cancelada','Finalizada','No Show'];
+
+        // Normaliza reservas antiguas para asegurar la propiedad estado
+        function normalizarReservas() {
+            const reservas = getReservas() || [];
+            let modificado = false;
+            const out = reservas.map(r => {
+                if (!r || typeof r !== 'object') return r;
+                if (!r.hasOwnProperty('estado') || !ESTADOS_VALIDOS.includes(r.estado)) {
+                    r.estado = 'Pendiente';
+                    modificado = true;
+                }
+                return r;
+            });
+            if (modificado) saveReservas(out);
+            return out;
+        }
+
+        // Función central para cambiar estado y aplicar efectos colaterales
+        function setReservaEstado(idReserva, nuevoEstado) {
+            if (!ESTADOS_VALIDOS.includes(nuevoEstado)) return false;
+            const reservas = getReservas();
+            const idx = reservas.findIndex(r => r.idReserva === idReserva);
+            if (idx === -1) return false;
+            reservas[idx].estado = nuevoEstado;
+
+            // Efectos: si finaliza o es No Show, liberar la mesa asignada
+            if (nuevoEstado === 'Finalizada' || nuevoEstado === 'No Show') {
+                const mesas = getMesas();
+                const idMesa = reservas[idx].idMesaAsignada;
+                const mIdx = mesas.findIndex(m => m.id === idMesa);
+                if (mIdx !== -1) {
+                    mesas[mIdx].estado = 'disponible';
+                    saveMesas(mesas);
+                }
+            }
+
+            const ok = saveReservas(reservas);
+            if (ok) {
+                actualizarEstadosMesas();
+                cargarReservas();
+                cargarMesa();
+            }
+            return ok;
+        }
+
+        // Procesa No Shows automáticos (umbral en minutos opcional)
+        function procesarNoShows(thresholdMinutos = 0) {
+            const reservas = getReservas();
+            const ahora = new Date();
+            const hoy = ahora.toISOString().split('T')[0];
+            const minutosAhora = timeToMinutes(`${String(ahora.getHours()).padStart(2,'0')}:${String(ahora.getMinutes()).padStart(2,'0')}`);
+            let mod = false;
+
+            reservas.forEach(r => {
+                if (!r || !r.fechaReserva || !r.horaFinReserva) return;
+                if (r.fechaReserva !== hoy) return;
+                if (['Finalizada','Cancelada','No Show'].includes(r.estado)) return;
+                const fin = timeToMinutes(r.horaFinReserva);
+                if (isNaN(fin)) return;
+                if (minutosAhora > (fin + thresholdMinutos)) {
+                    r.estado = 'No Show';
+                    mod = true;
+                }
+            });
+
+            if (mod) {
+                saveReservas(reservas);
+                actualizarEstadosMesas();
+                cargarReservas();
+                cargarMesa();
+            }
+            return mod;
+        }
+
+        function saveMesas(mesas) {
+            try {
+                localStorage.setItem('mesas', JSON.stringify(mesas));
+                return true;
+            } catch (e) {
+                console.error('Error guardando mesas', e);
+                return false;
+            }
+        }
+
+        function getNextMesaId() {
+            const key = 'nextMesaId';
+            let next = parseInt(localStorage.getItem(key), 10);
+            if (isNaN(next) || next < 1) next = 1;
+            localStorage.setItem(key, String(next + 1));
+            return 'mesa' + next;
+        }
+
+        function getReservas() {
+            return safeParse('reservas') || [];
+        }
+
+        function saveReservas(reservas) {
+            try {
+                localStorage.setItem('reservas', JSON.stringify(reservas));
+                return true;
+            } catch (e) {
+                console.error('Error guardando reservas', e);
+                return false;
+            }
+        }
+
+        function getNextReservaId() {
+            const key = 'nextReservaId';
+            let next = parseInt(localStorage.getItem(key), 10);
+            if (isNaN(next) || next < 1) next = 1;
+            localStorage.setItem(key, String(next + 1));
+            return 'reserva' + next;
+        }
+
+        // ---------------------------
+        // Utilitarios de tiempo y formato
+        // ---------------------------
+        function timeToMinutes(hhmm) {
+            if (!hhmm || typeof hhmm !== 'string') return NaN;
+            const parts = hhmm.split(':');
+            if (parts.length < 2) return NaN;
+            const h = parseInt(parts[0], 10);
+            const m = parseInt(parts[1], 10);
+            if (isNaN(h) || isNaN(m)) return NaN;
+            return h * 60 + m;
+        }
+
+        function minutesToTime(totalMinutes) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        }
+
+        // Calcular duración entre hora inicio y fin
+        function calcularDuracion(horaInicio, horaFin) {
+            const minutosInicio = timeToMinutes(horaInicio);
+            const minutosFin = timeToMinutes(horaFin);
+            
+            if (isNaN(minutosInicio) || isNaN(minutosFin)) return 0;
+            
+            const duracionMinutos = minutosFin - minutosInicio;
+            if (duracionMinutos <= 0) return 0;
+            
+            return (duracionMinutos / 60).toFixed(1);
+        }
+
+        function formatearFecha(fecha) {
+            if (!fecha) return '';
+            const d = new Date(fecha + 'T00:00:00');
+            if (isNaN(d)) return fecha;
+            return d.toLocaleDateString('es-ES');
+        }
+
+        function obtenerNombreMesa(mesaId) {
+            const mesas = getMesas();
+            const mesa = mesas.find(m => m.id === mesaId);
+            return mesa ? (mesa.nombre || mesa.id) : 'Mesa no encontrada';
+        }
+
+        // Validar si una hora está dentro del rango permitido (8:00 - 23:00)
+        function validarHoraEnRango(hora) {
+            const minutos = timeToMinutes(hora);
+            return !isNaN(minutos) && minutos >= timeToMinutes('08:00') && minutos <= timeToMinutes('23:00');
+        }
+
+        // ---------------------------
+        // Función para actualizar estados de mesas según reservas
+        // ---------------------------
+        function actualizarEstadosMesas() {
+            const mesas = getMesas();
+            const reservas = getReservas();
+            const now = new Date();
+            const hoy = now.toISOString().split('T')[0];
+            const horaActual = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            const mActual = timeToMinutes(horaActual);
+
+            // por defecto dejar disponibles (si no están deshabilitadas)
+            mesas.forEach(m => { if (m.estado !== 'deshabilitada') m.estado = 'disponible'; });
+
+            reservas.forEach(r => {
+                if (['Cancelada','Finalizada','No Show'].includes(r.estado)) return;
+                if (r.fechaReserva !== hoy) return;
+                const ri = timeToMinutes(r.horaInicioReserva), rf = timeToMinutes(r.horaFinReserva);
+                if (isNaN(ri) || isNaN(rf)) return;
+                const idx = mesas.findIndex(x => x.id === r.idMesaAsignada);
+                if (idx === -1) return;
+                // marcar ocupada solo mientras la reserva esté en curso
+                if (mActual >= ri && mActual < rf) mesas[idx].estado = 'ocupada';
+            });
+
+            saveMesas(mesas);
+            return mesas;
+        }
+
+        // Reemplaza/actualiza iniciarActualizacionEstados() por esta versión
+        function iniciarActualizacionEstados() {
+            // Normalizar datos al inicio
+            normalizarReservas();
+            // Procesar No Shows al cargar (umbral 0 = marcar inmediatamente si pasó la horaFin)
+            procesarNoShows(0);
+
+            // Actualizar inmediatamente la UI
+            actualizarEstadosMesas();
+            cargarMesa();
+
+            // Limpiar intervalo previo si existe
+            if (estadoUpdateInterval) clearInterval(estadoUpdateInterval);
+
+            // Ejecutar periódicamente: actualizar estados y procesar No Shows (cada 60s)
+            estadoUpdateInterval = setInterval(() => {
+                actualizarEstadosMesas();
+                procesarNoShows(0);
+                cargarMesa();
+            }, 60000);
+        }
+
+        // ---------------------------
+        // Mensajes y confirmación
+        // ---------------------------
+        function mostrarMensaje(mensaje, tipo = 'info') {
+            const contenedorMensajes = document.getElementById('contenedorMensajes');
+            if (!contenedorMensajes) return;
+            const mensajeElemento = document.createElement('div');
+            const bgColor = tipo === 'error' ? 'message-error' : tipo === 'success' ? 'message-success' : 'message-info';
+            mensajeElemento.className = `message ${bgColor}`;
+            mensajeElemento.innerHTML = `<i class="fas fa-${tipo === 'error' ? 'exclamation-triangle' : tipo === 'success' ? 'check-circle' : 'info-circle'}"></i> ${mensaje}`;
+            contenedorMensajes.appendChild(mensajeElemento);
+
+            setTimeout(() => {
+                mensajeElemento.style.opacity = '0';
+                setTimeout(() => mensajeElemento.remove(), 300);
+            }, 3000);
+        }
+
+        function mostrarConfirmacion(mensaje, callback) {
+            const modal = document.getElementById('modalConfirmacion');
+            const msgEl = document.getElementById('confirmacionMensaje');
+            if (!modal || !msgEl) {
+                // fallback: ejecutar callback directamente con confirm del navegador
+                if (confirm(mensaje)) callback();
+                return;
+            }
+            msgEl.textContent = mensaje;
+            modal.classList.remove('hidden');
+            confirmacionCallback = callback;
+        }
+
+        function cerrarModalConfirmacion() {
+            const modal = document.getElementById('modalConfirmacion');
+            if (modal) modal.classList.add('hidden');
+            confirmacionCallback = null;
+        }
+
+        function cerrarModalAgregarMesa() {
+            const modal = document.getElementById('agregarMesa');
+            if (modal) modal.classList.add('hidden');
+            const botonGuardar = document.getElementById('am-guardar');
+            if (botonGuardar && botonGuardar.dataset && botonGuardar.dataset.editarId) delete botonGuardar.dataset.editarId;
+        }
+
+        // ---------------------------
+        // Visualización de mesas
+        // ---------------------------
+        function cargarMesa() {
+            const grid = document.getElementById('mesasGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            
+            // Asegurarse de que los estados están actualizados
+            const mesas = actualizarEstadosMesas();
+
+            const totalEl = document.getElementById('total-mesas');
+            const disponiblesEl = document.getElementById('mesas-disponibles');
+            if (totalEl) totalEl.textContent = mesas.length;
+            if (disponiblesEl) disponiblesEl.textContent = mesas.filter(m => m.estado === 'disponible').length;
+
+            // Calcular ocupación
+            const ocupacionEl = document.getElementById('ocupacion');
+            if (ocupacionEl && mesas.length > 0) {
+                const ocupadas = mesas.filter(m => m.estado === 'ocupada').length;
+                const porcentaje = Math.round((ocupadas / mesas.length) * 100);
+                ocupacionEl.textContent = `${porcentaje}%`;
+            }
+
+            mesas.forEach(mesa => {
+                const card = document.createElement('div');
+                let statusClass = '';
+                let statusText = '';
+
+                if (mesa.estado === 'disponible') {
+                    statusClass = 'status-disponible';
+                    statusText = 'Disponible';
+                } else if (mesa.estado === 'ocupada') {
+                    statusClass = 'status-ocupada';
+                    statusText = 'Ocupada';
+                } else {
+                    statusClass = 'status-deshabilitada';
+                    statusText = 'Deshabilitada';
+                }
+
+                card.className = `mesa-card`;
+                card.innerHTML = `
+                    <div class="mesa-header">
+                        <div class="mesa-name">${mesa.nombre ? mesa.nombre : mesa.id}</div>
+                        <span class="mesa-status ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="mesa-body">
+                        <div class="mesa-info">
+                            <div class="mesa-detail">
+                                <i class="fas fa-users"></i>
+                                <span>Capacidad: ${mesa.capacidad}</span>
+                            </div>
+                            <div class="mesa-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${mesa.ubicacion || 'Sin ubicación'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => mostrarDetalleMesa(mesa));
+                grid.appendChild(card);
+            });
+
+            // reservas de hoy
+            const reservas = getReservas();
+            const hoy = new Date().toISOString().split('T')[0];
+            const reservasHoy = reservas.filter(r => r.fechaReserva === hoy && r.estado !== 'Cancelada').length;
+            const reservasHoyEl = document.getElementById('reservas-hoy');
+            if (reservasHoyEl) reservasHoyEl.textContent = reservasHoy;
+        }
+
+        function mostrarDetalleMesa(mesa) {
+            const modal = document.getElementById('detalleMesa');
+            if (!modal) return;
+
+            const dmNombre = document.getElementById('dm-nombre');
+            const dmCapacidad = document.getElementById('dm-capacidad');
+            const dmUbicacion = document.getElementById('dm-ubicacion');
+            const dmEstado = document.getElementById('dm-estado');
+
+            if (dmNombre) dmNombre.textContent = mesa.nombre || mesa.id;
+            if (dmCapacidad) dmCapacidad.textContent = mesa.capacidad;
+            if (dmUbicacion) dmUbicacion.textContent = mesa.ubicacion || 'Sin ubicación';
+
+            if (dmEstado) {
+                dmEstado.className = 'reserva-estado';
+                if (mesa.estado === 'disponible') {
+                    dmEstado.textContent = 'Disponible';
+                    dmEstado.classList.add('estado-finalizada');
+                } else if (mesa.estado === 'ocupada') {
+                    dmEstado.textContent = 'Ocupada';
+                    dmEstado.classList.add('estado-confirmada');
+                } else {
+                    dmEstado.textContent = 'Deshabilitada';
+                    dmEstado.classList.add('estado-no-show');
+                }
+            }
+
+            modal.classList.remove('hidden');
+
+            const btnEditar = document.getElementById('dm-editar');
+            const btnEliminar = document.getElementById('dm-eliminar');
+            const btnReservar = document.getElementById('dm-reservar');
+
+            if (btnEditar) {
+                btnEditar.onclick = () => {
+                    cerrarModalDetalle();
+                    abrirModalEditarMesa(mesa.id);
+                };
+            }
+            if (btnEliminar) {
+                btnEliminar.onclick = () => {
+                    mostrarConfirmacion('¿Está seguro de eliminar esta mesa?', () => eliminarMesa(mesa.id));
+                };
+            }
+            if (btnReservar) {
+                btnReservar.onclick = () => {
+                    // Si la mesa está deshabilitada, no abrir modal y mostrar mensaje
+                    if (String(mesa.estado).toLowerCase() === 'deshabilitada') {
+                        mostrarMensaje('Esta mesa está deshabilitada y no se puede reservar.', 'error');
+                        return;
+                    }
+                    cerrarModalDetalle();
+                    abrirModalReserva(mesa.id);
+                };
+            }
+        }
+
+        function cerrarModalDetalle() {
+            const modal = document.getElementById('detalleMesa');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        // ---------------------------
+        // CRUD Mesas (modales)
+        // ---------------------------
+        function abrirModalEditarMesa(mesaId) {
+            const mesas = getMesas() || [];
+            const mesa = mesas.find(m => String(m.id) === String(mesaId));
+            if (!mesa) return mostrarMensaje('Mesa no encontrada', 'error');
+
+            const numEl = document.getElementById('am-numero');
+            const nombreDisplay = document.getElementById('am-nombre-display');
+            const capEl = document.getElementById('am-capacidad');
+            const ubEl = document.getElementById('am-ubicacion');
+            const estadoWrap = document.getElementById('am-estado-wrapper');
+            const estadoSelect = document.getElementById('am-estado');
+            const botonGuardar = document.getElementById('am-guardar');
+            const titulo = document.getElementById('am-titulo');
+            const modal = document.getElementById('agregarMesa');
+
+            // extraer número desde nombre actual si existe formato mesa-N
+            let nro = '';
+            const match = String(mesa.nombre || '').match(/^mesa-(\d+)$/i);
+            if (match) nro = match[1];
+
+            if (numEl) numEl.value = nro;
+            if (nombreDisplay) nombreDisplay.textContent = `mesa-${nro || ''}`;
+            if (capEl) capEl.value = mesa.capacidad ?? '';
+            if (ubEl) ubEl.value = mesa.ubicacion || '';
+
+            if (estadoWrap) estadoWrap.classList.remove('hidden');
+            if (estadoSelect) {
+                if (mesa.estado === 'deshabilitada') estadoSelect.value = 'deshabilitada';
+                else estadoSelect.value = 'disponible';
+            }
+
+            if (botonGuardar) botonGuardar.dataset.editarId = mesa.id;
+            if (titulo) titulo.textContent = 'Editar Mesa';
+
+            document.getElementById('error-numero')?.classList.add('hidden');
+            document.getElementById('error-capacidad')?.classList.add('hidden');
+
+            if (modal) modal.classList.remove('hidden');
+
+            // actualizar display al cambiar numero
+            if (numEl) {
+                numEl.addEventListener('input', () => {
+                    const v = numEl.value ? `mesa-${String(numEl.value).trim()}` : 'mesa-';
+                    nombreDisplay.textContent = v;
+                }, { once: false });
+            }
+        }
+
+        function validarNumeroMesa(numero, idExcluir = null) {
+            const elError = document.getElementById('error-numero');
+            if (numero === null || numero === undefined || numero === '') {
+                if (elError) { elError.textContent = 'El número de la mesa es obligatorio.'; elError.classList.remove('hidden'); }
+                return false;
+            }
+            const nro = parseInt(numero, 10);
+            if (isNaN(nro) || nro <= 0) {
+                if (elError) { elError.textContent = 'Número de mesa inválido.'; elError.classList.remove('hidden'); }
+                return false;
+            }
+
+            const mesas = getMesas() || [];
+            const nombreCompleto = `mesa-${nro}`;
+            const existe = mesas.some(m => {
+                if (idExcluir && String(m.id) === String(idExcluir)) return false;
+                return String(m.nombre || '').trim().toLowerCase() === nombreCompleto.toLowerCase();
+            });
+            if (existe) {
+                if (elError) { elError.textContent = 'Ya existe una mesa con ese número.'; elError.classList.remove('hidden'); }
+                return false;
+            }
+
+            if (elError) elError.classList.add('hidden');
+            return true;
+        }
+
+        function abrirModalAgregarMesa() {
+            const numEl = document.getElementById('am-numero');
+            const nombreDisplay = document.getElementById('am-nombre-display');
+            const capEl = document.getElementById('am-capacidad');
+            const ubEl = document.getElementById('am-ubicacion');
+            const estadoWrap = document.getElementById('am-estado-wrapper');
+            const estadoSelect = document.getElementById('am-estado');
+            const botonGuardar = document.getElementById('am-guardar');
+            const titulo = document.getElementById('am-titulo');
+            const modal = document.getElementById('agregarMesa');
+
+            if (numEl) numEl.value = '';
+            if (nombreDisplay) nombreDisplay.textContent = 'mesa-';
+            if (capEl) capEl.value = '';
+            if (ubEl) ubEl.value = '';
+            if (estadoSelect) estadoSelect.value = 'disponible';
+            if (estadoWrap) estadoWrap.classList.add('hidden');
+            if (botonGuardar && botonGuardar.dataset) delete botonGuardar.dataset.editarId;
+            if (titulo) titulo.textContent = 'Agregar Mesa';
+
+            document.getElementById('error-numero')?.classList.add('hidden');
+            document.getElementById('error-capacidad')?.classList.add('hidden');
+            document.getElementById('error-ubicacion')?.classList.add('hidden');
+
+            if (modal) modal.classList.remove('hidden');
+
+            // actualizar display al cambiar numero
+            if (numEl) {
+                numEl.addEventListener('input', () => {
+                    const v = numEl.value ? `mesa-${String(numEl.value).trim()}` : 'mesa-';
+                    nombreDisplay.textContent = v;
+                }, { once: false });
+            }
+        }
+
+        function guardarMesa() {
+            const numEl = document.getElementById('am-numero');
+            const capEl = document.getElementById('am-capacidad');
+            const ubEl = document.getElementById('am-ubicacion');
+            const estadoSelect = document.getElementById('am-estado');
+            const botonGuardar = document.getElementById('am-guardar');
+
+            if (!numEl || !capEl) return mostrarMensaje('Formulario de mesa incompleto', 'error');
+
+            const numero = String(numEl.value || '').trim();
+            const capacidad = parseInt(capEl.value, 10);
+            const ubicacion = (ubEl?.value || '').trim();
+            const editarId = botonGuardar?.dataset?.editarId || null;
+
+            // validar numero obligatorio y unico
+            if (!validarNumeroMesa(numero, editarId)) return;
+
+            if (isNaN(capacidad) || capacidad <= 0) {
+                const el = document.getElementById('error-capacidad');
+                if (el) { el.textContent = 'Capacidad inválida.'; el.classList.remove('hidden'); }
+                return;
+            } else {
+                document.getElementById('error-capacidad')?.classList.add('hidden');
+            }
+
+            const mesas = getMesas() || [];
+            const nombreCompleto = `mesa-${parseInt(numero, 10)}`;
+
+            if (editarId) {
+                const idx = mesas.findIndex(m => String(m.id) === String(editarId));
+                if (idx === -1) return mostrarMensaje('Mesa a editar no encontrada', 'error');
+                const nuevoEstadoRaw = estadoSelect ? String(estadoSelect.value).toLowerCase() : null;
+                const permitido = ['disponible', 'deshabilitada'];
+                const estadoFinal = (nuevoEstadoRaw && permitido.includes(nuevoEstadoRaw)) ? nuevoEstadoRaw : (mesas[idx].estado || 'disponible');
+
+                mesas[idx] = { ...mesas[idx], nombre: nombreCompleto, capacidad, ubicacion, estado: estadoFinal };
+            } else {
+                const nuevoId = getNextMesaId();
+                mesas.push({ id: nuevoId, nombre: nombreCompleto, capacidad, ubicacion, estado: 'disponible' });
+            }
+
+            if (saveMesas(mesas)) {
+                mostrarMensaje('Mesa guardada correctamente', 'success');
+                cerrarModalAgregarMesa();
+                cargarMesa();
+            } else {
+                mostrarMensaje('Error al guardar mesa', 'error');
+            }
+        }
+
+        function eliminarMesa(mesaId) {
+            const mesas = getMesas();
+            const mesasActualizadas = mesas.filter(m => m.id !== mesaId);
+            if (saveMesas(mesasActualizadas)) {
+                mostrarMensaje('Mesa eliminada correctamente', 'success');
+                cerrarModalDetalle();
+                cargarMesa();
+            } else {
+                mostrarMensaje('Error al eliminar la mesa', 'error');
+            }
+        }
+
+        // ---------------------------
+        // Verificar disponibilidad (rango de horas)
+        // ---------------------------
+        function verificarDisponibilidadMesa(mesaId, fecha, horaInicio, horaFin, excluirReservaId = null) {
+            // Si no hay fecha/hora, consideramos que no podemos verificar => no bloquear
+            if (!fecha || !horaInicio || !horaFin) return true;
+
+            const mesas = getMesas();
+            const mesa = mesas.find(m => m.id === mesaId);
+            if (!mesa) return false; // si no existe la mesa, no está disponible
+
+            // Si la mesa está deshabilitada, no puede reservarse
+            if (mesa.estado === 'deshabilitada') return false;
+
+            const reservas = getReservas();
+
+            // Convertir horas a minutos
+            const nuevoInicio = timeToMinutes(horaInicio);
+            const nuevoFin = timeToMinutes(horaFin);
+            if (isNaN(nuevoInicio) || isNaN(nuevoFin) || nuevoFin <= nuevoInicio) return false;
+
+            // Revisar solapamientos en la misma mesa y misma fecha
+            return !reservas.some(reserva => {
+                // excluir la reserva que estamos editando (comparar como strings para evitar problemas de tipo)
+                if (excluirReservaId && String(reserva.idReserva) === String(excluirReservaId)) return false;
+                if (reserva.idMesaAsignada !== mesaId) return false;
+                if (reserva.fechaReserva !== fecha) return false;
+                if (reserva.estado === 'Cancelada' || reserva.estado === 'Finalizada' || reserva.estado === 'No Show') return false;
+
+                const rInicio = timeToMinutes(reserva.horaInicioReserva);
+                const rFin = timeToMinutes(reserva.horaFinReserva);
+                if (isNaN(rInicio) || isNaN(rFin)) return false;
+
+                // overlap check: start < existingEnd && end > existingStart
+                return (nuevoInicio < rFin && nuevoFin > rInicio);
+            });
+        }
+
+        // ---------------------------
+        // Modal Reserva (abrir/guardar/cargar mesas disponibles)
+        // ---------------------------
+        function abrirModalReserva(mesaId = null, reserva = null) {
+            reservaEditando = reserva;
+            mesaPreseleccionada = mesaId;
+
+            const titulo = document.getElementById('tituloModalReserva');
+            if (titulo) titulo.textContent = reserva ? 'Editar Reserva' : 'Nueva Reserva';
+
+            const inNombre = document.getElementById('inputNombreReserva');
+            const inPersonas = document.getElementById('inputPersonasReserva');
+            const inFecha = document.getElementById('inputFechaReserva');
+            const inHoraInicio = document.getElementById('inputHoraInicioReserva');
+            const inHoraFin = document.getElementById('inputHoraFinReserva');
+            const selectOcasion = document.getElementById('selectOcasionReserva');
+            const textareaNotas = document.getElementById('textareaNotasReserva');
+            const duracionInfo = document.getElementById('duracionEvento');
+            const tiempoDuracion = document.getElementById('tiempoDuracion');
+
+            const estadoWrap = document.getElementById('rs-estado-wrapper');
+            const estadoSelect = document.getElementById('selectEstadoReserva');
+
+            if (reserva) {
+                if (inNombre) inNombre.value = reserva.nombreCliente || '';
+                if (inPersonas) inPersonas.value = reserva.numeroPersonas || '';
+                if (inFecha) inFecha.value = reserva.fechaReserva || '';
+                if (inHoraInicio) inHoraInicio.value = reserva.horaInicioReserva || '';
+                if (inHoraFin) inHoraFin.value = reserva.horaFinReserva || '';
+                if (selectOcasion) selectOcasion.value = reserva.ocasionEspecial || 'Ninguna';
+                if (textareaNotas) textareaNotas.value = reserva.notasAdicionales || '';
+
+                // mostrar select de estado en edición y setear valor (Pendiente/Confirmada/Cancelada/No Show)
+                if (estadoWrap) estadoWrap.classList.remove('hidden');
+                if (estadoSelect) {
+                    const permitido = ['Pendiente','Confirmada','Cancelada','No Show'];
+                    estadoSelect.value = permitido.includes(reserva.estado) ? reserva.estado : 'Pendiente';
+                    estadoSelect.disabled = false;
+                }
+
+                // calcular duración
+                if (inHoraInicio && inHoraFin) {
+                    const duracion = calcularDuracion(inHoraInicio.value, inHoraFin.value);
+                    tiempoDuracion.textContent = duracion;
+                }
+            } else {
+                if (inNombre) inNombre.value = '';
+                if (inPersonas) inPersonas.value = '';
+                const hoy = new Date().toISOString().split('T')[0];
+                if (inFecha) { inFecha.min = hoy; inFecha.value = hoy; }
+                if (inHoraInicio) inHoraInicio.value = '08:00';
+                if (inHoraFin) inHoraFin.value = '09:00';
+                if (selectOcasion) selectOcasion.value = 'Ninguna';
+                if (textareaNotas) textareaNotas.value = '';
+
+                // ocultar select de estado en creación (estado será Pendiente por defecto)
+                if (estadoWrap) estadoWrap.classList.add('hidden');
+                if (estadoSelect) { estadoSelect.value = 'Pendiente'; estadoSelect.disabled = false; }
+
+                // calcular duración inicial
+                const duracion = calcularDuracion('08:00', '09:00');
+                tiempoDuracion.textContent = duracion;
+            }
+
+            // esconder errores previos
+            document.querySelectorAll('[id^="error"]').forEach(el => { if (el && el.classList) el.classList.add('hidden'); });
+
+            cargarMesasDisponiblesEnReserva();
+
+            const modal = document.getElementById('modalReserva');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function cerrarModalReserva() {
+            const modal = document.getElementById('modalReserva');
+            if (modal) modal.classList.add('hidden');
+            reservaEditando = null;
+            mesaPreseleccionada = null;
+        }
+
+        function cargarMesasDisponiblesEnReserva() {
+            const selectMesa = document.getElementById('selectMesaReserva');
+            if (!selectMesa) return;
+
+            // conservar la primera opción (placeholder)
+            while (selectMesa.options.length > 1) selectMesa.remove(1);
+
+            const mesas = getMesas();
+            const fechaEl = document.getElementById('inputFechaReserva');
+            const inicioEl = document.getElementById('inputHoraInicioReserva');
+            const finEl = document.getElementById('inputHoraFinReserva');
+
+            const fecha = fechaEl ? fechaEl.value : '';
+            const horaInicio = inicioEl ? inicioEl.value : '';
+            const horaFin = finEl ? finEl.value : '';
+
+            // Si se abrió el modal desde una mesa específica y NO estamos editando, bloquear selección a esa mesa
+            if (mesaPreseleccionada && !reservaEditando) {
+                const mesa = mesas.find(m => m.id === mesaPreseleccionada);
+                if (mesa) {
+                    const option = document.createElement('option');
+                    option.value = mesa.id;
+                    option.textContent = `${mesa.nombre || mesa.id} (Capacidad: ${mesa.capacidad})`;
+                    selectMesa.appendChild(option);
+                    selectMesa.value = mesa.id;
+                    selectMesa.disabled = true;
+                    return;
+                }
+            }
+
+            selectMesa.disabled = false;
+
+            mesas.forEach(mesa => {
+                // solo mesas no deshabilitadas para asignación
+                if (mesa.estado === 'deshabilitada') return;
+
+                // si no hay fecha u horas, dejamos que la verificación use la hora calculada (si existe)
+                const disponible = verificarDisponibilidadMesa(
+                    mesa.id,
+                    fecha,
+                    horaInicio,
+                    horaFin,
+                    reservaEditando ? reservaEditando.idReserva : null
+                );
+
+                // Añadir la mesa si está disponible OR si es la mesa asignada en la reserva que estamos editando
+                if (disponible || (reservaEditando && mesa.id === reservaEditando.idMesaAsignada)) {
+                    const option = document.createElement('option');
+                    option.value = mesa.id;
+                    option.textContent = `${mesa.nombre || mesa.id} (Capacidad: ${mesa.capacidad})`;
+                    selectMesa.appendChild(option);
+                }
+            });
+
+            // Si estamos editando, preseleccionar la mesa asignada
+            if (reservaEditando && reservaEditando.idMesaAsignada) {
+                selectMesa.value = reservaEditando.idMesaAsignada;
+            }
+        }
+
+        function editarReserva(idReserva) {
+            const reservas = getReservas();
+            // comparar como strings para evitar fallos por tipos
+            const reserva = reservas.find(r => String(r.idReserva) === String(idReserva));
+            if (reserva) {
+                abrirModalReserva(null, reserva);
+
+                // asegurar que el select tenga la opción de la mesa asignada (por si no se añadió aún)
+                setTimeout(() => {
+                    const select = document.getElementById('selectMesaReserva');
+                    if (select) {
+                        if (![...select.options].some(o => o.value === reserva.idMesaAsignada)) {
+                            cargarMesasDisponiblesEnReserva();
+                        }
+                        select.value = reserva.idMesaAsignada || '';
+                    }
+                }, 10);
+            }
+        }
+
+        function validarFormularioReserva() {
+            const nombre = (document.getElementById('inputNombreReserva') || {}).value || '';
+            const numeroPersonas = (document.getElementById('inputPersonasReserva') || {}).value || '';
+            const fecha = (document.getElementById('inputFechaReserva') || {}).value || '';
+            const horaInicio = (document.getElementById('inputHoraInicioReserva') || {}).value || '';
+            const horaFin = (document.getElementById('inputHoraFinReserva') || {}).value || '';
+            const mesa = (document.getElementById('selectMesaReserva') || {}).value || '';
+            const ocasion = (document.getElementById('selectOcasionReserva') || {}).value || '';
+
+            let valido = true;
+            const hideError = id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); };
+            ['errorNombreReserva','errorPersonasReserva','errorFechaReserva','errorHoraInicioReserva','errorHoraFinReserva','errorMesaReserva','errorOcasionReserva'].forEach(hideError);
+
+            if (!nombre.trim()) {
+                const el = document.getElementById('errorNombreReserva'); if (el) { el.textContent = 'El nombre del cliente es obligatorio'; el.classList.remove('hidden'); }
+                valido = false;
+            }
+
+            if (!numeroPersonas || isNaN(numeroPersonas) || parseInt(numeroPersonas, 10) <= 0) {
+                const el = document.getElementById('errorPersonasReserva'); if (el) { el.textContent = 'El número de personas debe ser mayor a 0'; el.classList.remove('hidden'); }
+                valido = false;
+            }
+
+            if (!fecha) {
+                const el = document.getElementById('errorFechaReserva'); if (el) { el.textContent = 'La fecha es obligatoria'; el.classList.remove('hidden'); }
+                valido = false;
+            } else {
+                const hoy = new Date().toISOString().split('T')[0];
+                if (fecha < hoy) {
+                    const el = document.getElementById('errorFechaReserva'); if (el) { el.textContent = 'La fecha debe ser hoy o en el futuro'; el.classList.remove('hidden'); }
+                    valido = false;
+                }
+            }
+
+            if (!horaInicio) {
+                const el = document.getElementById('errorHoraInicioReserva'); if (el) { el.textContent = 'La hora de inicio es obligatoria'; el.classList.remove('hidden'); }
+                valido = false;
+            } else if (!validarHoraEnRango(horaInicio)) {
+                const el = document.getElementById('errorHoraInicioReserva'); if (el) { el.textContent = 'La hora de inicio no es válida'; el.classList.remove('hidden'); }
+                valido = false;
+            }
+
+            if (!horaFin) {
+                const el = document.getElementById('errorHoraFinReserva'); if (el) { el.textContent = 'La hora de fin es obligatoria'; el.classList.remove('hidden'); }
+                valido = false;
+            } else if (!validarHoraEnRango(horaFin)) {
+                const el = document.getElementById('errorHoraFinReserva'); if (el) { el.textContent = 'La hora de fin no es válida'; el.classList.remove('hidden'); }
+                valido = false;
+            } else if (horaInicio && horaFin && timeToMinutes(horaFin) <= timeToMinutes(horaInicio)) {
+                const el = document.getElementById('errorHoraFinReserva'); if (el) { el.textContent = 'La hora de fin debe ser posterior a la hora de inicio'; el.classList.remove('hidden'); }
+                valido = false;
+            }
+
+            if (!ocasion) {
+                const el = document.getElementById('errorOcasionReserva'); if (el) { el.textContent = 'Debe seleccionar una ocasión'; el.classList.remove('hidden'); }
+                valido = false;
+            }
+
+            if (!mesa) {
+                const el = document.getElementById('errorMesaReserva'); if (el) { el.textContent = 'Debe seleccionar una mesa'; el.classList.remove('hidden'); }
+                valido = false;
+            }
+
+            // verificar disponibilidad real antes de aceptar (solapamientos y estado deshabilitado)
+            if (valido) {
+                const disponible = verificarDisponibilidadMesa(
+                    document.getElementById('selectMesaReserva').value,
+                    document.getElementById('inputFechaReserva').value,
+                    document.getElementById('inputHoraInicioReserva').value,
+                    document.getElementById('inputHoraFinReserva').value,
+                    reservaEditando ? reservaEditando.idReserva : null
+                );
+                if (!disponible) {
+                    mostrarMensaje('La mesa seleccionada no está disponible en el horario indicado', 'error');
+                    valido = false;
+                }
+            }
+
+            return valido;
+        }
+
+        function guardarReserva() {
+            if (!validarFormularioReserva()) return;
+
+            const nombreCliente = (document.getElementById('inputNombreReserva') || {}).value.trim();
+            const numeroPersonas = parseInt((document.getElementById('inputPersonasReserva') || {}).value, 10);
+            const fechaReserva = (document.getElementById('inputFechaReserva') || {}).value;
+            const horaInicioReserva = (document.getElementById('inputHoraInicioReserva') || {}).value;
+            const horaFinReserva = (document.getElementById('inputHoraFinReserva') || {}).value;
+            const ocasionEspecial = (document.getElementById('selectOcasionReserva') || {}).value || 'Ninguna';
+            const notasAdicionales = (document.getElementById('textareaNotasReserva') || {}).value.trim();
+            const idMesaAsignada = (document.getElementById('selectMesaReserva') || {}).value;
+            const estadoSelect = document.getElementById('selectEstadoReserva');
+            const estadoSeleccionado = (estadoSelect && !estadoSelect.disabled) ? estadoSelect.value : null;
+
+            const reservas = getReservas();
+
+            if (reservaEditando) {
+                const index = reservas.findIndex(r => String(r.idReserva) === String(reservaEditando.idReserva));
+                if (index === -1) return mostrarMensaje('Reserva no encontrada', 'error');
+
+                const prevMesaId = reservas[index].idMesaAsignada;
+                const estadoPrev = reservas[index].estado || 'Pendiente';
+
+                reservas[index] = {
+                    ...reservas[index],
+                    nombreCliente,
+                    numeroPersonas,
+                    fechaReserva,
+                    horaInicioReserva,
+                    horaFinReserva,
+                    ocasionEspecial,
+                    notasAdicionales,
+                    idMesaAsignada,
+                    estado: estadoSeleccionado || estadoPrev
+                };
+
+                // Si cambió la mesa, ajustar estados de mesas afectadas (misma lógica que ya tienes)
+                if (String(prevMesaId) !== String(idMesaAsignada)) {
+                    const mesas = getMesas();
+
+                    const otras = getReservas().some(r => {
+                        if (String(r.idReserva) === String(reservas[index].idReserva)) return false;
+                        if (r.idMesaAsignada !== prevMesaId) return false;
+                        if (r.fechaReserva !== fechaReserva) return false;
+                        if (['Cancelada','Finalizada','No Show'].includes(r.estado)) return false;
+                        const ri = timeToMinutes(r.horaInicioReserva), rf = timeToMinutes(r.horaFinReserva);
+                        if (isNaN(ri) || isNaN(rf)) return false;
+                        return !(timeToMinutes(horaFinReserva) <= ri || timeToMinutes(horaInicioReserva) >= rf);
+                    });
+
+                    if (!otras && prevMesaId) {
+                        const prevIdx = mesas.findIndex(m => m.id === prevMesaId);
+                        if (prevIdx !== -1 && mesas[prevIdx].estado !== 'deshabilitada') mesas[prevIdx].estado = 'disponible';
+                    }
+
+                    if (idMesaAsignada) {
+                        const nuevoIdx = mesas.findIndex(m => m.id === idMesaAsignada);
+                        if (nuevoIdx !== -1 && mesas[nuevoIdx].estado !== 'deshabilitada') {
+                            const hoyLocal = new Date().toISOString().split('T')[0];
+                            if (fechaReserva === hoyLocal) {
+                                const ahoraMin = timeToMinutes(`${String(new Date().getHours()).padStart(2,'0')}:${String(new Date().getMinutes()).padStart(2,'0')}`);
+                                const ri = timeToMinutes(horaInicioReserva), rf = timeToMinutes(horaFinReserva);
+                                if (!isNaN(ri) && !isNaN(rf) && ahoraMin >= ri && ahoraMin < rf) {
+                                    mesas[nuevoIdx].estado = 'ocupada';
+                                } else {
+                                    mesas[nuevoIdx].estado = 'disponible';
+                                }
+                            } else {
+                                mesas[nuevoIdx].estado = 'disponible';
+                            }
+                        }
+                    }
+
+                    saveMesas(mesas);
+                }
+            } else {
+                // nueva reserva: siempre Pendiente
+                const idReserva = getNextReservaId();
+                const nuevaReserva = {
+                    idReserva,
+                    nombreCliente,
+                    numeroPersonas,
+                    fechaReserva,
+                    horaInicioReserva,
+                    horaFinReserva,
+                    ocasionEspecial,
+                    notasAdicionales,
+                    idMesaAsignada,
+                    estado: 'Pendiente'
+                };
+                reservas.push(nuevaReserva);
+            }
+
+            if (saveReservas(reservas)) {
+                mostrarMensaje(`Reserva ${reservaEditando ? 'actualizada' : 'creada'} correctamente`, 'success');
+                cerrarModalReserva();
+                actualizarEstadosMesas();
+                cargarMesa();
+                const seccionReservas = document.getElementById('seccionReservas');
+                if (seccionReservas && !seccionReservas.classList.contains('hidden')) cargarReservas();
+            } else {
+                mostrarMensaje('Error al guardar la reserva', 'error');
+            }
+        }
+
+        // ---------------------------
+        // Cargar y gestionar tabla de reservas
+        // ---------------------------
+        function cargarReservas(filtroFecha = null, filtroEstado = null) {
+            const tbody = document.getElementById('tbodyReservas');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            const reservas = getReservas();
+            let lista = reservas || [];
+            if (filtroFecha) lista = lista.filter(r => r.fechaReserva === filtroFecha);
+            if (filtroEstado) lista = lista.filter(r => r.estado === filtroEstado);
+
+            if (!lista || lista.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-4 text-center text-gray-500">No hay reservas</td></tr>`;
+                return;
+            }
+
+            lista.forEach(reserva => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50';
+                const fechaFormateada = formatearFecha(reserva.fechaReserva);
+                const nombreMesa = obtenerNombreMesa(reserva.idMesaAsignada);
+                const horario = `${reserva.horaInicioReserva} - ${reserva.horaFinReserva}`;
+                const iconUrl = getIconForOcasion(reserva.ocasionEspecial);
+
+                const estado = String(reserva.estado || '');
+                // Bloquear acciones para estados históricos y también para reservas finalizadas
+                const isBlocked = (estado === 'No Show' || estado === 'Cancelada' || estado === 'Finalizada');
+
+                const editarAttrs = isBlocked ? 'disabled aria-disabled="true" class="editar-reserva opacity-50 cursor-not-allowed mr-2 text-blue-300"' : 'class="editar-reserva text-blue-600 hover:text-blue-800 mr-2"';
+                const pagarAttrs = isBlocked ? 'disabled aria-disabled="true" class="pagar-reserva opacity-50 cursor-not-allowed mr-2 text-green-300"' : 'class="pagar-reserva text-green-600 hover:text-green-800 mr-2"';
+                const eliminarAttrs = isBlocked ? 'disabled aria-disabled="true" class="eliminar-reserva opacity-50 cursor-not-allowed text-red-300"' : 'class="eliminar-reserva text-red-600 hover:text-red-800"';
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-medium">${reserva.idReserva}</td>
+                    <td class="px-4 py-3">${reserva.nombreCliente}</td>
+                    <td class="px-4 py-3">${reserva.numeroPersonas}</td>
+                    <td class="px-4 py-3">${fechaFormateada}</td>
+                    <td class="px-4 py-3">${horario}</td>
+                    <td class="px-4 py-3 text-center">
+                        <img src="${iconUrl}" alt="${reserva.ocasionEspecial || 'Ocasion'}" class="ocasion-img" data-src="${iconUrl}" />
+                    </td>
+                    <td class="px-4 py-3">${nombreMesa}</td>
+                    <td class="px-4 py-3">
+                        <span class="reserva-estado ${getClaseEstadoReserva(reserva.estado)}">${reserva.estado}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <div class="action-buttons-small">
+                            <button ${editarAttrs} data-id="${reserva.idReserva}" title="${isBlocked ? 'Reserva bloqueada: no editable' : 'Editar'}"><i class="fas fa-edit"></i></button>
+                            <button ${pagarAttrs} data-id="${reserva.idReserva}" title="${isBlocked ? 'Reserva bloqueada: no pagable' : 'Pagar'}"><i class="fas fa-money-bill"></i></button>
+                            <button ${eliminarAttrs} data-id="${reserva.idReserva}" title="${isBlocked ? 'Reserva bloqueada: no eliminable' : 'Eliminar'}"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Delegación de eventos - usar estado actual desde getReservas() para decidir permitir acción
+            tbody.querySelectorAll('.editar-reserva').forEach(btn => btn.addEventListener('click', (e) => {
+                const id = btn.dataset.id;
+                const r = (getReservas() || []).find(x => String(x.idReserva) === String(id));
+                if (!r) return mostrarMensaje('Reserva no encontrada', 'error');
+                if (r.estado === 'No Show' || r.estado === 'Cancelada' || r.estado === 'Finalizada') {
+                    mostrarMensaje('Esta reserva está bloqueada y no se puede editar.', 'error');
+                    return;
+                }
+                editarReserva(id);
+            }));
+
+            tbody.querySelectorAll('.pagar-reserva').forEach(btn => btn.addEventListener('click', (e) => {
+                const id = btn.dataset.id;
+                const r = (getReservas() || []).find(x => String(x.idReserva) === String(id));
+                if (!r) return mostrarMensaje('Reserva no encontrada', 'error');
+                if (r.estado === 'No Show' || r.estado === 'Cancelada' || r.estado === 'Finalizada') {
+                    mostrarMensaje('Esta reserva no se puede pagar.', 'error');
+                    return;
+                }
+                mostrarConfirmacion('¿Está seguro de marcar esta reserva como pagada?', () => setReservaEstado(id, 'Finalizada'));
+            }));
+
+            tbody.querySelectorAll('.eliminar-reserva').forEach(btn => btn.addEventListener('click', (e) => {
+                const id = btn.dataset.id;
+                const r = (getReservas() || []).find(x => String(x.idReserva) === String(id));
+                if (!r) return mostrarMensaje('Reserva no encontrada', 'error');
+                if (r.estado === 'No Show' || r.estado === 'Cancelada' || r.estado === 'Finalizada') {
+                    mostrarMensaje('Esta reserva está bloqueada y no se puede eliminar.', 'error');
+                    return;
+                }
+                mostrarConfirmacion('¿Está seguro de eliminar esta reserva? Esta acción no se puede deshacer.', () => eliminarReserva(id));
+            }));
+
+            // Abrir imagen ampliada al hacer click (delegación)
+            tbody.addEventListener('click', (e) => {
+                const img = e.target.closest && e.target.closest('.ocasion-img');
+                if (img) abrirImagenModal(img.dataset.src || img.src);
+            });
+        }
+
+        function getClaseEstadoReserva(estado) {
+            switch (estado) {
+                case 'Pendiente': return 'estado-pendiente';
+                case 'Confirmada': return 'estado-confirmada';
+                case 'Cancelada': return 'estado-cancelada';
+                case 'Finalizada': return 'estado-finalizada';
+                case 'No Show': return 'estado-no-show';
+                default: return 'estado-pendiente';
+            }
+        }
+
+        function eliminarReserva(idReserva) {
+            const reservas = getReservas();
+            const reserva = reservas.find(r => r.idReserva === idReserva);
+            const nuevas = reservas.filter(r => r.idReserva !== idReserva);
+
+            if (saveReservas(nuevas)) {
+                mostrarMensaje('Reserva eliminada', 'success');
+                // Forzar actualización de estados
+                actualizarEstadosMesas();
+                cargarReservas();
+                cargarMesa();
+            } else mostrarMensaje('Error al eliminar la reserva', 'error');
+        }
+
+        // Funciones para modal de imagen
+        function abrirImagenModal(src) {
+            const modal = document.getElementById('modalImagen');
+            const imgEl = document.getElementById('modalImagenImg');
+            if (!modal || !imgEl) return;
+            imgEl.src = src || '';
+            modal.classList.remove('hidden');
+            // cerrar al hacer click fuera del content
+            modal.onclick = (e) => { if (e.target === modal) cerrarImagenModal(); };
+        }
+
+        function cerrarImagenModal() {
+            const modal = document.getElementById('modalImagen');
+            const imgEl = document.getElementById('modalImagenImg');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            if (imgEl) imgEl.src = '';
+        }
+
+        // ---------------------------
+        // Inicialización
+        // ---------------------------
+        function initSampleData() {
+            // No cargar datos de ejemplo automáticamente
+            // Solo inicializar IDs si no existen
+            if (!localStorage.getItem('nextMesaId')) localStorage.setItem('nextMesaId', '1');
+            if (!localStorage.getItem('nextReservaId')) localStorage.setItem('nextReservaId', '1');
+        }
+
+        // ---------------------------
+        // Eventos globales
+        // ---------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar datos
+            initSampleData();
+
+            // Iniciar la actualización automática de estados
+            iniciarActualizacionEstados();
+
+            // Navegación entre secciones
+            document.querySelectorAll('.nav-item[data-section]').forEach(item => {
+                item.addEventListener('click', function () {
+                    const section = this.dataset.section;
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const seccionReservas = document.getElementById('seccionReservas');
+                    const seccionMesas = document.getElementById('seccionMesas');
+
+                    if (section === 'mesas') {
+                        if (seccionReservas) seccionReservas.classList.add('hidden');
+                        if (seccionMesas) seccionMesas.classList.remove('hidden');
+                        document.getElementById('main-title').innerHTML = '<i class="fas fa-table"></i><span>Gestión de Mesas</span>';
+                    } else if (section === 'reservas') {
+                        if (seccionMesas) seccionMesas.classList.add('hidden');
+                        if (seccionReservas) { seccionReservas.classList.remove('hidden'); cargarReservas(); }
+                        document.getElementById('main-title').innerHTML = '<i class="fas fa-calendar-check"></i><span>Gestión de Reservas</span>';
+                    }
+                });
+            });
+
+            // Eventos de botones
+            document.getElementById('am-guardar').addEventListener('click', guardarMesa);
+            document.getElementById('am-cancelar').addEventListener('click', cerrarModalAgregarMesa);
+            document.getElementById('dm-cerrar').addEventListener('click', cerrarModalDetalle);
+            document.getElementById('btnGuardarReserva').addEventListener('click', guardarReserva);
+            document.getElementById('btnCancelarReserva').addEventListener('click', cerrarModalReserva);
+            document.getElementById('inputFechaReserva').addEventListener('change', cargarMesasDisponiblesEnReserva);
+            document.getElementById('inputHoraInicioReserva').addEventListener('change', cargarMesasDisponiblesEnReserva);
+            document.getElementById('inputHoraFinReserva').addEventListener('change', cargarMesasDisponiblesEnReserva);
+            document.getElementById('btnVerReservas').addEventListener('click', () => {
+                const seccionMesas = document.getElementById('seccionMesas');
+                const seccionReservas = document.getElementById('seccionReservas');
+                if (seccionMesas) seccionMesas.classList.add('hidden');
+                if (seccionReservas) { seccionReservas.classList.remove('hidden'); cargarReservas(); }
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                const item = document.querySelector('.nav-item[data-section="reservas"]');
+                if (item) item.classList.add('active');
+                document.getElementById('main-title').innerHTML = '<i class="fas fa-calendar-check"></i><span>Gestión de Reservas</span>';
+            });
+            document.getElementById('btnVolverMesas').addEventListener('click', () => {
+                const seccionMesas = document.getElementById('seccionMesas');
+                const seccionReservas = document.getElementById('seccionReservas');
+                if (seccionReservas) seccionReservas.classList.add('hidden');
+                if (seccionMesas) seccionMesas.classList.remove('hidden');
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                const item = document.querySelector('.nav-item[data-section="mesas"]');
+                if (item) item.classList.add('active');
+                document.getElementById('main-title').innerHTML = '<i class="fas fa-table"></i><span>Gestión de Mesas</span>';
+            });
+            document.getElementById('btnAplicarFiltros').addEventListener('click', () => {
+                const filtroFecha = document.getElementById('filtroFecha').value || '';
+                const filtroEstado = document.getElementById('filtroEstado').value || '';
+                cargarReservas(filtroFecha || null, filtroEstado || null);
+            });
+            document.getElementById('btnAgregarReserva').addEventListener('click', () => abrirModalReserva());
+            document.getElementById('btnConfirmarCancelar').addEventListener('click', cerrarModalConfirmacion);
+            document.getElementById('btnConfirmarAceptar').addEventListener('click', () => { if (confirmacionCallback) confirmacionCallback(); cerrarModalConfirmacion(); });
+
+            // Eventos para calcular automáticamente la duración de la reserva
+            const inputHoraInicio = document.getElementById('inputHoraInicioReserva');
+            const inputHoraFin = document.getElementById('inputHoraFinReserva');
+            const tiempoDuracion = document.getElementById('tiempoDuracion');
+
+            function actualizarDuracion() {
+                const horaInicio = inputHoraInicio.value;
+                const horaFin = inputHoraFin.value;
+                
+                if (horaInicio && horaFin) {
+                    const duracion = calcularDuracion(horaInicio, horaFin);
+                    tiempoDuracion.textContent = duracion;
+                } else {
+                    tiempoDuracion.textContent = '0';
+                }
+            }
+
+            if (inputHoraInicio) {
+                inputHoraInicio.addEventListener('change', actualizarDuracion);
+            }
+            
+            if (inputHoraFin) {
+                inputHoraFin.addEventListener('change', actualizarDuracion);
+            }
+
+            // Cerrar modal de imagen
+            document.getElementById('modalImagenClose').addEventListener('click', cerrarImagenModal);
+
+            // Menú móvil
+            document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+                document.querySelector('.side-panel').classList.toggle('open');
+            });
+        });
+
+        // Función para obtener icono de ocasión
+        function getIconForOcasion(ocasion) {
+            const map = {
+                'Cumpleaños': 'Cumpleaños.png',
+                'Aniversario': 'Aniversario.png',
+                'Reunión de Negocios': 'Negocios.png',
+                'Cena Romántica': 'Romancita.png',
+                'Celebración Familiar': 'Familiar.png',
+                'Evento Corporativo': 'Negocios.png',
+                'Graduación': 'Graduacion.png',
+                'Ninguna': 'Casual.png'
+            };
+            return map[ocasion] || 'Casual.png';
+        }
+    </script>
+</body>
+</html>
