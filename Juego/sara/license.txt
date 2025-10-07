@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sara
+* source:	https://sketchfab.com/3d-models/sara-b999683e217a46bfba4329c5096e89ae
+* author:	fabiancioppettini (https://sketchfab.com/fabiancioppettini)
+
+Model License:
+* license type:	CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+* requirements:	Author must be credited. Modified versions must have the same license. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sara" (https://sketchfab.com/3d-models/sara-b999683e217a46bfba4329c5096e89ae) by fabiancioppettini (https://sketchfab.com/fabiancioppettini) licensed under CC-BY-SA-4.0 (http://creativecommons.org/licenses/by-sa/4.0/)

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Soldado
+* source:	https://sketchfab.com/3d-models/soldado-ff21aa97db794e01af187d6011c72c1a
+* author:	jeferson (https://sketchfab.com/djotagame)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Soldado" (https://sketchfab.com/3d-models/soldado-ff21aa97db794e01af187d6011c72c1a) by jeferson (https://sketchfab.com/djotagame) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
