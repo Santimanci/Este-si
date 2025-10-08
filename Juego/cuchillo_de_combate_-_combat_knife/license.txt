@@ -1,0 +1,11 @@
+Model Information:
+* title:	Cuchillo de combate - Combat Knife
+* source:	https://sketchfab.com/3d-models/cuchillo-de-combate-combat-knife-d4099def918b4abe851654b3242cc2f2
+* author:	TutosN (https://sketchfab.com/Tutos_N)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Cuchillo de combate - Combat Knife" (https://sketchfab.com/3d-models/cuchillo-de-combate-combat-knife-d4099def918b4abe851654b3242cc2f2) by TutosN (https://sketchfab.com/Tutos_N) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

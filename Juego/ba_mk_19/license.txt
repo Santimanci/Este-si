@@ -1,0 +1,11 @@
+Model Information:
+* title:	[BA] Mk 19
+* source:	https://sketchfab.com/3d-models/ba-mk-19-ce0ed3ac09334b7baf41a4708a49d9eb
+* author:	xlisov (https://sketchfab.com/xlisov74)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "[BA] Mk 19" (https://sketchfab.com/3d-models/ba-mk-19-ce0ed3ac09334b7baf41a4708a49d9eb) by xlisov (https://sketchfab.com/xlisov74) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

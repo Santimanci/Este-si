@@ -1,0 +1,11 @@
+Model Information:
+* title:	CBR-9 Pistol
+* source:	https://sketchfab.com/3d-models/cbr-9-pistol-1034b78c10b542de8420fe525f755c4f
+* author:	nebula075 (https://sketchfab.com/nebula075)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "CBR-9 Pistol" (https://sketchfab.com/3d-models/cbr-9-pistol-1034b78c10b542de8420fe525f755c4f) by nebula075 (https://sketchfab.com/nebula075) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

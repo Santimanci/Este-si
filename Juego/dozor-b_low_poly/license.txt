@@ -1,0 +1,11 @@
+Model Information:
+* title:	DOZOR-B (LOW POLY)
+* source:	https://sketchfab.com/3d-models/dozor-b-low-poly-a27bb314cf9b4f59bc873833f2245d60
+* author:	lm9241221 (https://sketchfab.com/lm9241221)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "DOZOR-B (LOW POLY)" (https://sketchfab.com/3d-models/dozor-b-low-poly-a27bb314cf9b4f59bc873833f2245d60) by lm9241221 (https://sketchfab.com/lm9241221) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

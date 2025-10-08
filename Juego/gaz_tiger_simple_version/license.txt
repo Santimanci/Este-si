@@ -1,0 +1,11 @@
+Model Information:
+* title:	GAZ Tiger simple version
+* source:	https://sketchfab.com/3d-models/gaz-tiger-simple-version-eec33d67e5954468bbb38d9bd6e25a75
+* author:	Alex_Sandro (https://sketchfab.com/alexgerente659)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "GAZ Tiger simple version" (https://sketchfab.com/3d-models/gaz-tiger-simple-version-eec33d67e5954468bbb38d9bd6e25a75) by Alex_Sandro (https://sketchfab.com/alexgerente659) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -639,7 +639,6 @@
             <h1>OPERACIÓN: <span>LIBERTAD VENEZUELA</span></h1>
             <p>Comanda la misión táctica más importante de la historia. Planifica, coordina y ejecuta la operación para liberar a Venezuela del régimen de Maduro.</p>
             <div class="hero-buttons">
-                <button class="game-btn" onclick="startGame()">INICIAR OPERACIÓN</button>
                 <button class="game-btn game-btn-secondary" onclick="showScreen('personajes-screen')">VER PERSONAJES</button>
             </div>
         </div>
@@ -822,7 +821,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Armas/mac10/scene.gltf" 
+                            src="/Juego/low-poly_mac_10/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -864,7 +863,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Armas/cbr9/scene.gltf" 
+                            src="/Juego/cbr-9_pistol/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -906,7 +905,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Armas/ump45/scene.gltf" 
+                            src="/Juego/ba_mk_19/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -961,7 +960,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Armamentos/chaleco/scene.gltf" 
+                            src="/Juego/chaleco_antibalas_tactico_-_2/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -1003,7 +1002,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Armamentos/mina/scene.gltf" 
+                            src="/Juego/doomba/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -1045,7 +1044,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Armamentos/cuchillo/scene.gltf" 
+                            src="/Juego/cuchillo_de_combate_-_combat_knife/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -1100,7 +1099,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Vehiculos/btr60/scene.gltf" 
+                            src="/Juego/gaz_tiger_simple_version/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -1142,7 +1141,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Vehiculos/dozorb/scene.gltf" 
+                            src="/Juego/dozor-b_low_poly/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -1184,7 +1183,7 @@
                     </div>
                     <div class="card-3d-container">
                         <model-viewer 
-                            src="Vehiculos/l50/scene.gltf" 
+                            src="/Juego/military_cargo_truck/scene.gltf" 
                             auto-rotate 
                             camera-controls 
                             camera-orbit="0deg 75deg 105%"
@@ -1199,59 +1198,10 @@
             
             <div class="selection-actions">
                 <button class="game-btn game-btn-secondary" onclick="showScreen('armamentos-screen')">VOLVER</button>
-                <button class="game-btn" onclick="startMission()">INICIAR MISIÓN</button>
             </div>
         </div>
     </section>
 
-    <!-- Pantalla de misión -->
-    <section id="mision-screen" class="game-screen">
-        <div class="mission-container">
-            <div class="mission-header">
-                <h2>MISIÓN EN CURSO</h2>
-                <div id="mission-timer">00:00</div>
-            </div>
-            
-            <p>Tu equipo está listo para la operación. Has seleccionado:</p>
-            
-            <div class="mission-details">
-                <div class="mission-stat">
-                    <div>Comandante</div>
-                    <div class="mission-stat-value" id="selected-character">CAPITÁN RODRÍGUEZ</div>
-                </div>
-                <div class="mission-stat">
-                    <div>Arma</div>
-                    <div class="mission-stat-value" id="selected-weapon">MAC 10</div>
-                </div>
-                <div class="mission-stat">
-                    <div>Armamento</div>
-                    <div class="mission-stat-value" id="selected-armamento">CHALECO ANTIBALAS</div>
-                </div>
-                <div class="mission-stat">
-                    <div>Vehículo</div>
-                    <div class="mission-stat-value" id="selected-vehicle">BTR-60</div>
-                </div>
-                <div class="mission-stat">
-                    <div>Probabilidad de éxito</div>
-                    <div class="mission-stat-value" id="success-probability">-</div>
-                </div>
-            </div>
-            
-            <div class="mission-map">
-                <div class="map-point active" style="top: 30%; left: 20%;"></div>
-                <div class="map-label" style="top: 30%; left: 20%;">Punto de infiltración</div>
-                
-                <div class="map-point" style="top: 50%; left: 50%;"></div>
-                <div class="map-label" style="top: 50%; left: 50%;">Objetivo principal</div>
-                
-                <div class="map-point" style="top: 70%; left: 80%;"></div>
-                <div class="map-label" style="top: 70%; left: 80%;">Punto de extracción</div>
-            </div>
-            
-            <p id="mission-status">Preparando despliegue...</p>
-            
-            <button class="game-btn" onclick="executeMission()">EJECUTAR MISIÓN</button>
-        </div>
     </section>
 
     <script>
@@ -1308,29 +1258,7 @@
             });
         }
 
-        // Funciones del juego
-        function startGame() {
-            showScreen('personajes-screen');
-        }
-
-        function startMission() {
-            // Actualizar detalles de la misión
-            document.getElementById('selected-character').textContent = getSelectedName('personajes', selectedCharacter);
-            document.getElementById('selected-weapon').textContent = getSelectedName('armas', selectedWeapon);
-            document.getElementById('selected-armamento').textContent = getSelectedName('armamentos', selectedArmamento);
-            document.getElementById('selected-vehicle').textContent = getSelectedName('vehiculos', selectedVehicle);
-            
-            // Calcular probabilidad de éxito
-            const successProbability = calculateSuccessProbability();
-            document.getElementById('success-probability').textContent = successProbability + '%';
-            
-            // Iniciar temporizador
-            missionSeconds = 0;
-            updateTimer();
-            missionTimer = setInterval(updateTimer, 1000);
-            
-            showScreen('mision-screen');
-        }
+       
 
         // Función auxiliar para obtener el nombre del elemento seleccionado
         function getSelectedName(type, id) {
